@@ -1,0 +1,35 @@
+{
+    "name": "Getting Started Example",
+    "description": "Build an Extension!",
+    "version": "1.0",
+    "manifest_version": 3,
+    "icons": {
+      "128": "logo/logo-128.png"
+    },
+    "background": {
+      "service_worker": "background.js"
+    },
+    "permissions": ["storage","tabs", "activeTab", "scripting","declarativeNetRequest","declarativeNetRequestFeedback"],
+    "action": {
+      "default_popup": "popup/popup.html"
+    },
+    "declarative_net_request": {
+      "rule_resources": [
+        {
+          "id": "ads",
+          "enabled": true,
+          "path": "ads.json"
+        },
+        {
+          "id": "analytics",
+          "enabled": true,
+          "path": "analytics.json"
+        },
+        {
+          "id": "socialmedia",
+          "enabled": true,
+          "path": "socialmedia.json"
+        }
+      ]
+    }
+  }

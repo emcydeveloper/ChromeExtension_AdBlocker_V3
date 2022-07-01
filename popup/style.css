@@ -1,0 +1,118 @@
+﻿*{
+    font-family:sans-serif;
+}
+.container {
+    width: 315px;
+    height: 580px;
+    background-color: #f1ecec;
+}
+.row_header1 {
+    font-weight:700;
+    padding: 20px 10px 10px 10px;
+    font-family: sans-serif;
+    font-size: 15px;
+    margin: 0px !important;
+}
+.row_header2 {
+    font-weight: bold;
+    color: #206cbf;
+    padding-bottom: 10px;
+    font-family: sans-serif;
+    font-size: 20px;
+    margin: 0px !important;
+}
+.navbar-inverse {
+    background: linear-gradient(#0b1d3c, #206cbf) !important;
+    border-bottom-left-radius: 30px !important;
+    border-bottom-right-radius: 30px !important;
+    border: 0px solid !important;
+}
+.navbar {
+    height: 60px !important;
+}
+.nav {
+    float:right !important;
+    padding: 5px 20px 0px 0px !important;
+}
+.navbar-brand {
+    padding: 0px 0px 0px 20px !important;
+}
+.box_border {
+    padding-bottom:06px;
+    background-color:#fff;
+   margin-right: 15px;
+    margin-left: 15px;
+    margin-top: 0px;
+}
+.txt_cntr {
+    text-align: center;
+    color: #2e2e2e;
+    font-weight:bold;
+}
+.hr {
+    margin-top:15px;
+    margin-left:73px;
+    margin-right:73px;
+    border-top: 3px solid #f1f1f1;
+}
+.hr_2 {
+    margin-top: 5px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-top: 2px solid #f1f1f1;
+}
+.column {
+    float: left;
+    width: 15%;
+    padding: 5px;
+}
+.column1 {
+    float: left;
+    width: 5%;
+    padding: 10px;
+}
+.column2 {
+    padding-top:5px;
+    float: left;
+    width: 101px;
+}
+.row {
+    margin-left:10px;
+    margin-right:1px;
+    content: "";
+    display: table;
+    clear: both;
+}
+.spn_number {
+    color: #999393;
+    font-size:20px;
+    font-family:sans-serif;
+    font-weight:bold;
+}
+.spn_text {
+    color: #999393;
+    font-size: 14px;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+.spn_text2 {
+    padding-left:10px;
+    margin:0px !important;
+    display:inline-block;
+    color: #000;
+    font-size: 16px;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+.btn_finger {
+    cursor:pointer;
+    margin-top: 10px !important;
+    width: 65px;
+    padding: 15px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    background: linear-gradient(#0b1d3c, #206cbf) !important;
+}
+.img_cls{
+    padding-left:10px;
+}

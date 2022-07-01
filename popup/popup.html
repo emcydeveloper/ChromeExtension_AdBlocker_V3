@@ -1,0 +1,179 @@
+<html>
+  <head>
+    <title>extension</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="circle.css" rel="stylesheet" />
+    <style>
+      .row {
+        display: flex;
+      }
+
+      html,
+      body {
+        margin: 0; /* Space from this element (entire page) and others*/
+        padding: 0; /*space from content and border*/
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- <button id="btn-block">Block</button>
+      <button id="btn-allow">Allow</button> -->
+
+      <div class="box_border">
+        <nav
+          class="navbar navbar-inverse"
+          style="margin-left: -15px; margin-right: -15px"
+        >
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#"
+              ><img src="images/Logo.png" style="padding-top: 10px"
+            /></a>
+            <span style="padding-top: -10px; margin-left: 40px">
+              <a href="/settings/settings.html"
+                ><img src="images/settings.png" style="padding-right: 10px"
+              /></a>
+              <a href="#" id="toggle_button">
+                <input type="hidden" value="D" id="idED" />
+                <img src="images/logout.png" id="onoff" />
+              </a>
+            </span>
+          </div>
+        </nav>
+        <div class="txt_cntr">
+          <p class="row_header1">FingerPrint Features Tracked</p>
+          <p class="row_header2"><span id="categories"></span></p>
+          <img src="images/graph.png" class="img_s" style="width: 50%" />
+          <div class="hr"></div>
+          <p style="color: #999393" id="url">no page loaded</p>
+          <p style="color: #999393">
+            <!-- <span
+              id="allowurl"
+              style="color: #6ab6f7; cursor: pointer; padding: 5px"
+              >Allow</span
+            >/<span
+              id="blockurl"
+              style="color: #6ab6f7; cursor: pointer; padding: 5px"
+              >block</span
+            > -->
+            <button
+            id="btn-allow"
+            style="color: #6ab6f7; cursor: pointer; padding: 5px"
+            >Allow</button>
+            <button
+            id="btn-block"
+            style="color: #6ab6f7; cursor: pointer; padding: 5px"
+            >block</button>
+          </p>
+        </div>
+      </div>
+      <div class="box_border" style="margin-top: 10px">
+        <div class="txt_cntr">
+          <p class="row_header1">Tracker/Blocked</p>
+          <div class="hr_2"></div>
+        </div>
+        <div class="row" style="padding-top: 20px">
+          <div class="column" style="padding-left: 20px">
+            <img src="images/analytics.png" class="img_s" style="width: 50%" />
+          </div>
+          <div class="column">
+            <span class="spn_number" id="analytics">0</span>
+          </div>
+          <div class="column" style="padding-left: 25px">
+            <img src="images/ads.png" class="img_s" style="width: 50%" />
+          </div>
+          <div class="column">
+            <input type="hidden" value="0" id="ads1" />
+            <span class="spn_number" id="ads">0</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="column"></div>
+          <div class="column">
+            <span class="spn_text">Analytics</span>
+          </div>
+          <div class="column"></div>
+          <div class="column" style="padding-left: 35px">
+            <span class="spn_text">Ads</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="column" style="padding-left: 20px">
+            <img src="images/e_commerce.png" class="img_s" style="width: 50%" />
+          </div>
+          <div class="column">
+            <span class="spn_number" id="e_commerce">0</span>
+          </div>
+          <div class="column" style="padding-left: 25px">
+            <img src="images/more.png" class="img_s" style="width: 50%" />
+          </div>
+          <div class="column">
+            <span class="spn_number" id="more">0</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="column1"></div>
+          <div class="column2">
+            <span class="spn_text">E-Commerce</span>
+          </div>
+          <div class="column1"></div>
+          <div class="column" style="padding-left: 12px">
+            <span class="spn_text">Others</span>
+          </div>
+        </div>
+      </div>
+      <div class="box_border" style="margin-top: 10px">
+        <div class="row1">
+          <span>
+            <button class="btn_finger" id="btnCallHost">
+              <img src="images/Finger_Print.png" class="img_s" />
+            </button>
+          </span>
+          <span
+            ><h5 class="spn_text2">Rotated/Blocked</h5>
+            <img src="images/tick.png" class="img_cls"
+          /></span>
+        </div>
+      </div>
+      <table border="0" cellpadding="2" style="display: none">
+        <tr>
+          <td style="min-width: 165px"><b>Domain</b></td>
+          <td style="min-width: 155px" align="left"></td>
+        </tr>
+        <tr>
+          <td><b>JS Attributes Tracked</b></td>
+          <td align="left"><span id="coverage">0% (0/115)</span></td>
+        </tr>
+        <tr>
+          <td><b>Fingerprinting Features</b></td>
+          <td align="left"><span id="categories">0% (0/40)</span></td>
+        </tr>
+        <tr>
+          <td><b>Aggressive Features</b></td>
+          <td align="left"><span id="aggressive_coverage">0% (0/18)</span></td>
+        </tr>
+        <tr style="display: none">
+          <td style="border-bottom: 0px">
+            <b>Sensitive</b>
+            <ul id="fingerprint_categories"></ul>
+          </td>
+          <td style="border-bottom: 0px">
+            <b>Aggressive </b>
+            <ul id="fingerprint_categories_aggro"></ul>
+          </td>
+        </tr>
+        <tr style="display: none">
+          <td style="border-bottom: 0px"><b>Highest Scoring Scripts</b></td>
+          <table
+            id="fingerprint_scripts"
+            width="100%"
+            style="display: none; padding: 10px"
+          ></table>
+        </tr>
+        <tr></tr>
+      </table>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>
