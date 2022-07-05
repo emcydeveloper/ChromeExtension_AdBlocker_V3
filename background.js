@@ -1,39 +1,81 @@
 //Stores the Tab ID with corresponding blocked counts
 let getMatchedRuleCounts = [];
+let _dynBlockSite = [];
+let appStatus = true; //False - Disable ad blocker | True - Enable ad blocker
+let adOnSite = false; //True - Allows ads on site | False - Disable ads on sites
+
+// chrome.storage.sync.clear("adBlockStateManage")
 
 chrome.tabs.onUpdated.addListener((getTabDetailsOnUpdate, changeInfo, tab) => {
-  // chrome.declarativeNetRequest.GETMATCHEDRULES_QUOTA_INTERVAL = 1;
-  // chrome.declarativeNetRequest.MAX_GETMATCHEDRULES_CALLS_PER_INTERVAL = 100;
+  chrome.storage.sync.get(
+    "adBlockStateManage",
+    function ({ adBlockStateManage }) {
+      console.log("chrome.storage.sync.get", adBlockStateManage);
+      let { dynBlockSite, adBlockStatus, allowAdonSites } = adBlockStateManage;
+      _dynBlockSite = [...dynBlockSite];
+      appStatus = adBlockStatus;
+      console.log(tab);
+      adOnSite = allowAdonSites.some((sites) => {
+        // console.log("******************",sites,tab.url,sites==tab.url);
+        return sites === tab.url;
+        // "ganesh"==="ganesh"
+      });
+
+      console.log("adOnSite", adOnSite);
+      console.log("updated data dynBlockSite", _dynBlockSite);
+      console.log("adBlockStatus from UI", adBlockStatus);
+      console.log("appStatus", appStatus);
+
+      if (appStatus === true && adOnSite === false) {
+        console.log("App Enabled");
+        enableExtension(getTabDetailsOnUpdate, changeInfo, tab);
+      } else {
+        console.log("App disabled");
+        disableExtension();
+      }
+    }
+  );
+});
+
+function disableExtension() {
+  chrome.declarativeNetRequest.updateEnabledRulesets({
+    disableRulesetIds: ["ads", "analytics", "socialmedia"],
+  });
+}
+
+function enableExtension(getTabDetailsOnUpdate, changeInfo, tab) {
+  console.log(changeInfo.status);
 
   switch (changeInfo.status) {
     case "loading":
-      chrome.declarativeNetRequest.getDynamicRules(dynamicRulesHandler);
+      // chrome.declarativeNetRequest.getDynamicRules(dynamicRulesHandler);
       break;
     case "complete":
+      chrome.declarativeNetRequest.getDynamicRules(dynamicRulesHandler);
       getRulesStatus(getTabDetailsOnUpdate, tab);
       break;
     default:
       break;
   }
-});
+}
 
 function setBadgeCount(count = 0, tabId) {
   chrome.action.setBadgeText({ text: count.toString(), tabId: tabId });
 }
 
-
-
 function getRulesStatus(getTabDetailsOnUpdate, tab) {
-
+  console.log("Inside getRulesStatus complete");
+  chrome.declarativeNetRequest.updateEnabledRulesets({
+    enableRulesetIds: ["ads", "analytics", "socialmedia"],
+  });
   chrome.declarativeNetRequest.getMatchedRules(
     { tabId: getTabDetailsOnUpdate },
     (matchedRulesInTab) => {
+      console.log("matchedRulesInTab", matchedRulesInTab);
       if (matchedRulesInTab != undefined) {
         let matchedRuleCount = matchedRulesInTab.rulesMatchedInfo.length;
 
-
         setBadgeCount(matchedRuleCount, getTabDetailsOnUpdate);
-
 
         let found = getMatchedRuleCounts.some(
           (item) => item.tabId === getTabDetailsOnUpdate
@@ -61,7 +103,7 @@ function getRulesStatus(getTabDetailsOnUpdate, tab) {
             }
           });
         }
- 
+
         chrome.storage.sync.set({ getMatchedRuleCounts });
       } else {
         console.error("Rule test limit exceed - ", matchedRulesInTab);
@@ -78,53 +120,55 @@ function updateDynamicRules(deleteItems, formRules) {
   });
 }
 
-
-function dynamicRulesHandler(getItm)  {
+function dynamicRulesHandler(getItm) {
   let deleteItems = [];
   let formRules = [];
+  // let blockUrls = ["goo"];
   let blockUrls = [];
-  chrome.storage.sync.get("dynBlockSite", ({ dynBlockSite }) => {
-    if (dynBlockSite.length > 0) {
-      dynBlockSite.map((item) => (blockUrls = [...blockUrls, item.url]));
-      console.log("URLS to block : ", blockUrls);
-      getItm.map((itm) => {
-        deleteItems = [...deleteItems, itm.id];
-      });
 
-      blockUrls.forEach((domain, index) => {
-        let id = index + 1;
-        formRules = [
-          ...formRules,
-          {
-            id: id,
-            priority: 1,
-            action: { type: "block" },
-            condition: { urlFilter: domain, resourceTypes: ["main_frame"] },
-          },
-        ];
-      });
+  let dynBlockSite = _dynBlockSite;
+  console.log("dynBlockSite", dynBlockSite);
+  if (dynBlockSite.length > 0) {
+    dynBlockSite.map((item) => (blockUrls = [...blockUrls, item.url]));
+    // if (dynBlockSite.length) {
+    console.log("URLS to block : ", blockUrls);
+    getItm.map((itm) => {
+      deleteItems = [...deleteItems, itm.id];
+    });
 
-      updateDynamicRules(deleteItems, formRules);
-      // chrome.declarativeNetRequest.getDynamicRules((a) =>console.log(a));
-    } else {
-      getItm.map((itm) => {
-        deleteItems = [...deleteItems, itm.id];
-      });
+    blockUrls.forEach((domain, index) => {
+      let id = index + 1;
+      formRules = [
+        ...formRules,
+        {
+          id: id,
+          priority: 1,
+          action: { type: "block" },
+          condition: { urlFilter: domain, resourceTypes: ["main_frame"] },
+        },
+      ];
+    });
 
-      blockUrls.forEach((domain, index) => {
-        let id = index + 1;
-        formRules = [
-          ...formRules,
-          {
-            id: id,
-            priority: 1,
-            action: { type: "block" },
-            condition: { urlFilter: domain, resourceTypes: ["main_frame"] },
-          },
-        ];
-      });
+    updateDynamicRules(deleteItems, formRules);
+    // chrome.declarativeNetRequest.getDynamicRules((a) =>console.log(a));
+  } else {
+    getItm.map((itm) => {
+      deleteItems = [...deleteItems, itm.id];
+    });
 
-      updateDynamicRules(deleteItems, formRules);
-    }
-  });
+    blockUrls.forEach((domain, index) => {
+      let id = index + 1;
+      formRules = [
+        ...formRules,
+        {
+          id: id,
+          priority: 1,
+          action: { type: "block" },
+          condition: { urlFilter: domain, resourceTypes: ["main_frame"] },
+        },
+      ];
+    });
+
+    updateDynamicRules(deleteItems, formRules);
+  }
 }

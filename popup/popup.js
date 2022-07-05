@@ -3,17 +3,24 @@ let ads = document.getElementById("ads");
 let e_commerce = document.getElementById("e_commerce");
 let more = document.getElementById("more");
 let tabURL = document.getElementById("url");
+let btnBlockStatus = document.getElementById("btn-block");
+let btnAllowStatus = document.getElementById("btn-allow");
+let chkAppControl = document.getElementById("app-control");
+let divUiControl = document.getElementById("container");
+// divUiControl.style.pointerEvents= 'none';
+// divUiControl.disabled = true;
 // let btnAllowStatus = document.getElementById("allowurl");
 // let btnBlockStatus = document.getElementById("blockurl");
 let dynBlockSite = [];
+let _allowAdonSites = ["https://www.dinamalar.com/"]
+let appControl = true;
+let adBlockStateManage = {};
+let checkLocalStorage = localStorage.hasOwnProperty("_adBlockStateManage");
 
 window.onload = async function getCurrentTab() {
   let queryOptions = { active: true, lastFocusedWindow: true };
 
   let [tab] = await chrome.tabs.query(queryOptions);
-
-  dynamicURLBlock(tab.url);
-
   chrome.storage.sync.get(
     "getMatchedRuleCounts",
     ({ getMatchedRuleCounts }) => {
@@ -39,7 +46,7 @@ window.onload = async function getCurrentTab() {
       );
     }
   );
-  // return tab;
+  getSetLocalStorage(tab.url);
 };
 
 function setValue(url, blockedRule) {
@@ -55,26 +62,63 @@ function setValue(url, blockedRule) {
   tabURL.innerText = url;
 }
 
-function dynamicURLBlock(currentUrl) {
+function getSetLocalStorage(currentUrl) {
   console.log(currentUrl);
-  let btnBlockStatus = document.getElementById("btn-block");
-  let btnAllowStatus = document.getElementById("btn-allow");
 
-  if (localStorage._dynBlockSite) {
-    dynBlockSite = JSON.parse(localStorage.getItem("_dynBlockSite"));
+  if (checkLocalStorage === true) {
+    let { dynBlockSite, adBlockStatus, allowAdonSites } = JSON.parse(
+      localStorage.getItem("_adBlockStateManage")
+    );
+    adBlockStateManage = {
+      ...adBlockStateManage,
+      dynBlockSite: dynBlockSite,
+      adBlockStatus: adBlockStatus,
+      allowAdonSites: allowAdonSites,
+    };
+    appControl = adBlockStatus;
+    chkAppControl.checked = appControl;
+    appControl === true
+      ? (divUiControl.style.pointerEvents = "auto")
+      : (divUiControl.style.pointerEvents = "none");
+    console.log(btnBlockStatus.disabled);
     btnBlockStatus.disabled = dynBlockSite.some(
       (item) => item.url == currentUrl
     );
     btnAllowStatus.disabled = !btnBlockStatus.disabled;
-    console.log("local", dynBlockSite);
   } else {
+    adBlockStateManage = {
+      ...adBlockStateManage,
+      dynBlockSite: dynBlockSite,
+      adBlockStatus: appControl,
+      allowAdonSites: _allowAdonSites,
+    };
     btnBlockStatus.disabled = false;
     btnAllowStatus.disabled = !btnBlockStatus.disabled;
-    localStorage.setItem("_dynBlockSite", JSON.stringify(dynBlockSite));
+    chkAppControl.checked = appControl;
+    appControl === true
+      ? (divUiControl.style.pointerEvents = "auto")
+      : (divUiControl.style.pointerEvents = "none");
+
+    console.log("before syn store in else", adBlockStateManage);
+    setValueToStorage(adBlockStateManage);
+
   }
+
 
   btnBlockStatus.addEventListener("click", () => handleBlockClick("block"));
   btnAllowStatus.addEventListener("click", () => handleBlockClick("allow"));
+  chkAppControl.addEventListener("click", () => {
+    appControl = !appControl;
+    chkAppControl.checked = appControl;
+    appControl === true
+      ? (divUiControl.style.pointerEvents = "auto")
+      : (divUiControl.style.pointerEvents = "none");
+    adBlockStateManage = {
+      ...adBlockStateManage,
+      adBlockStatus: appControl,
+    };
+    setValueToStorage(adBlockStateManage);
+  });
 
   function handleBlockClick(getHandler) {
     btnAllowStatus.disabled = !btnAllowStatus.disabled;
@@ -100,8 +144,29 @@ function blockAllowHandler(getHandler, currentUrl) {
     default:
       console.error("Error in switch case while handling block/allow");
   }
+  // let { dynBlockSite, adBlockStatus, allowAdonSites } = adBlockStateManage;
+  console.log("dynBlockSite", dynBlockSite);
+
   dynBlockSite = dynBlockSite.filter((item) => item.type != false);
-  localStorage.setItem("_dynBlockSite", JSON.stringify(dynBlockSite));
-  chrome.storage.sync.set({ dynBlockSite });
-  console.log(dynBlockSite);
+
+  adBlockStateManage = {
+    ...adBlockStateManage,
+    dynBlockSite: dynBlockSite,
+    adBlockStatus: appControl,
+    allowAdonSites: _allowAdonSites,
+  };
+
+  setValueToStorage(adBlockStateManage);
+}
+
+function setValueToStorage(adBlockStateManage) {
+  localStorage.setItem(
+    "_adBlockStateManage",
+    JSON.stringify(adBlockStateManage)
+  );
+  console.log("before syn store inside switch", adBlockStateManage);
+
+  chrome.storage.sync.set({ adBlockStateManage }, (value) =>
+    console.log("Chrome storage sync set inside switch - ", value)
+  );
 }
