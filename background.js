@@ -21,6 +21,15 @@ chrome.tabs.onUpdated.addListener((getTabDetailsOnUpdate, changeInfo, tab) => {
         // "ganesh"==="ganesh"
       });
 
+      let test = allowAdonSites.map((sites) => {
+         console.log("******************",tab.url,sites);
+        return getText(tab.url, sites)
+        return sites === tab.url;
+        // "ganesh"==="ganesh"
+      });
+
+      console.log("test",test)
+
       console.log("adOnSite", adOnSite);
       console.log("updated data dynBlockSite", _dynBlockSite);
       console.log("adBlockStatus from UI", adBlockStatus);
@@ -171,4 +180,14 @@ function dynamicRulesHandler(getItm) {
 
     updateDynamicRules(deleteItems, formRules);
   }
+}
+
+function getText(value, toSearchVal) {
+  console.log(value, toSearchVal);
+  return (
+    value
+      .toLowerCase()
+      .toString()
+      .indexOf(toSearchVal.toLowerCase().toString()) >= 0
+  );
 }

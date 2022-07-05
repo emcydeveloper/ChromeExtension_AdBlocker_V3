@@ -11,7 +11,7 @@ let btnUserInputBlock = document.getElementById("btn-site-to-block");
 let txtToBlock = document.getElementById("txt-site-to-block");
 
 // let _dynBlockSite = [];
-let _allowAdonSites = ["https://www.dinamalar.com/"];
+let _allowAdonSites = ["dinamalar"];
 let _appControl = true;
 let adBlockStateManage = {};
 let checkLocalStorage = localStorage.hasOwnProperty("_adBlockStateManage");
@@ -102,7 +102,7 @@ function getSetLocalStorage(currentUrl) {
       ...adBlockStateManage,
       dynBlockSite: [],
       adBlockStatus: _appControl,
-      allowAdonSites: _allowAdonSites,
+      allowAdonSites: [],
     };
     btnBlockStatus.disabled = false;
     btnAllowStatus.disabled = !btnBlockStatus.disabled;
@@ -163,6 +163,7 @@ function getSetLocalStorage(currentUrl) {
     blockAllowHandler(getHandler, currentUrl);
     // pStatus.innerText = `You chossen to - ${getHandler}`;
   }
+  console.log("_____________adBlockStateManage",adBlockStateManage)
 }
 
 function blockAllowHandler(getHandler, currentUrl) {
@@ -286,3 +287,4 @@ function getText(value, toSearchVal) {
       .indexOf(toSearchVal.toLowerCase().toString()) >= 0
   );
 }
+console.log(JSON.stringify(adBlockStateManage));
