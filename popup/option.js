@@ -16,7 +16,7 @@ document.getElementById("blocksite-table").style.display = "block";
 document.getElementById("allow-ad-site-table").style.display = "none";
 
 // let _dynBlockSite = [];
-let _allowAdonSites = ["dinamalar", "google", "ganesh"];
+// let _allowAdonSites = ["dinamalar", "google", "ganesh"];
 let _appControl = true;
 let adBlockStateManage = {};
 let checkLocalStorage = localStorage.hasOwnProperty("_adBlockStateManage");
@@ -271,7 +271,7 @@ function blockAllowHandler(getHandler, currentUrl) {
     ...adBlockStateManage,
     // dynBlockSite: _dynBlockSite,
     adBlockStatus: _appControl,
-    allowAdonSites: _allowAdonSites,
+    // allowAdonSites: adBlockStateManage.allowAdonSites,
   };
   tableDisplayBlockedSites(adBlockStateManage.dynBlockSite);
   setValueToStorage(adBlockStateManage);
