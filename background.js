@@ -10,25 +10,36 @@ chrome.tabs.onUpdated.addListener((getTabDetailsOnUpdate, changeInfo, tab) => {
   chrome.storage.sync.get(
     "adBlockStateManage",
     function ({ adBlockStateManage }) {
-      console.log("chrome.storage.sync.get", adBlockStateManage);
+      console.log(
+        "chrome.storage.sync.get from background",
+        adBlockStateManage
+      );
       let { dynBlockSite, adBlockStatus, allowAdonSites } = adBlockStateManage;
       _dynBlockSite = [...dynBlockSite];
       appStatus = adBlockStatus;
-      console.log(tab);
+      console.log("adOnSite", adOnSite);
+      console.log("Current URL from background", tab);
+
       adOnSite = allowAdonSites.some((sites) => {
-        // console.log("******************",sites,tab.url,sites==tab.url);
+        console.log("*******adOnSite TEsting***********",sites,tab.url,sites==tab.url);
         return sites === tab.url;
         // "ganesh"==="ganesh"
       });
+      // console.log("|||||||||||||||||||||||||||||||||||||||",allowAdonSites.length > 0)
 
-      let test = allowAdonSites.map((sites) => {
-         console.log("******************",tab.url,sites);
-        return getText(tab.url, sites)
-        return sites === tab.url;
-        // "ganesh"==="ganesh"
-      });
+      // if(allowAdonSites.length > 0) {
+      //   console.log("|||||||||||||||||||||||||||||||||||||||")
+      //   allowAdonSites.map((sites) => {
+      //     console.log("******************", tab.url, sites);
+      //     adOnSite = getText(tab.url, sites);
+      //     // return sites === tab.url;
+      //     // "ganesh"==="ganesh"
+      //   });
+      // } else {
+      //   adOnSite = false;
+      // }
 
-      console.log("test",test)
+      console.log("adOnSite", adOnSite);
 
       console.log("adOnSite", adOnSite);
       console.log("updated data dynBlockSite", _dynBlockSite);
@@ -183,7 +194,7 @@ function dynamicRulesHandler(getItm) {
 }
 
 function getText(value, toSearchVal) {
-  console.log(value, toSearchVal);
+  console.log("getText", value, toSearchVal);
   return (
     value
       .toLowerCase()

@@ -1,0 +1,133 @@
+﻿<html>
+<head>
+    <title>extension</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="options.css">
+    <link href="circle.css" rel="stylesheet" />
+    <style>
+        .row {
+            display: flex;
+        }
+
+        html, body {
+            margin: 0; /* Space from this element (entire page) and others*/
+            padding: 0; /*space from content and border*/
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box_border">
+            <nav class="navbar navbar-inverse" style="margin-left: -15px;margin-right: -15px;">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href=""><img src="images/Logo.png" style="padding-top:10px;" /></a>
+                    <span style="padding-top:-10px;margin-left:40px;">
+                        <a href="#"><img src="images/settings.png" id="toggle_button" style="padding-right:10px;" /></a>
+                        <!-- <a href="#" id="toggle_button">
+                            <input type="hidden" value="D" id="idED" />
+                            <img src="images/logout.png" id="onoff" />
+                        </a> -->
+                        <a href="#" id="app-control">
+                            <!-- <input type="hidden" value="D" id="idED" /> -->
+                            <input type="hidden" value="D" />
+                            <img src="images/logout.png" id="onoff" />
+                          </a>
+                    </span>
+                </div>
+            </nav>
+            <div class="txt_cntr">
+                <div class="container1" id="TabsSystem" data-tab="Tab1">
+                    <div class="d-flex">
+                        <div class="d-flex text-center">
+                            <div class="TabButton" data-tab="Tab1"> Options</div>
+                            <div class="TabButton" data-tab="Tab2"> Configure</div>
+                            <div class="TabButton" data-tab="Tab3"> About</div>
+                        </div>
+                    </div>
+                    <div class="hr_3"></div>
+                    <div class="d-flex-col">
+                        <div class="tab-section" data-tab="Tab1">
+                            <div class="blockMenu" id="div-radio">
+                                <!-- <input type="radio"  id="allow" name="urlAB" value="1" checked>
+                                <label for="allow">Allow</label>
+                                <input type="radio"  id="block" name="urlAB" value="2">
+                                <label for="block">Block</label> -->
+
+                                <input type="radio" id="allow" class="radioTest" name="myRadios" value="Sitesblocked" checked="true" />
+                                <label for="allow">Sites blocked</label>
+                                <input type="radio" id="block" class="radioTest" name="myRadios" value="AllowAdOnSites" />
+                                <label for="block">Allow Ad on sites</label>
+
+                            </div>
+                            <div class="dvAddurl">
+                                <!-- <input class="txtUrl" type="url" id="txtUrl" placeholder="Add websites" />
+                                <button class="btnAdd" id="btnAdd">Add</button>
+                                <p style="color:red;" id="errURL"></p> -->
+                                <input id="txt-site-to-block" type="text"  placeholder="type"/>
+                                <button id="btn-site-to-block" style="display: none;">Block</button>
+                                <button id="dynamic-block-allow">Block Site</button>
+                            </div>
+                            <div class="hr_3"></div>
+
+
+
+                            <!-- <div class="urlList" id="dvAllow">
+                                <table width="100%" id="tblAllowList">
+                                </table>
+                            </div>
+                            <div class="urlList" id="dvBlock" style="display:none;">
+                                <table width="100%" id="tblBlackList">
+                                </table>
+                            </div> -->
+
+                            
+                                <div id="blocksite-table"></div>
+                            
+                            
+                                <div id="allow-ad-site-table"></div>
+                            
+
+
+                        </div>
+                        <div class="tab-section" data-tab="Tab2">
+                            <div class="right_top" style="margin-top: 12px;">
+                                <div class="check_txt" data-toggle="tooltip" title="Notifications enable/disable">
+                                    <input type="checkbox" name="SetBadgeText" id="idBadgeText" style="float: left;" checked>
+                                    <p>Enable notifications.</p>
+                                </div>
+                                <div class="check_txt">
+                                    <input type="checkbox" id="idAnonymous" style="float: left;" checked disabled>
+                                    <p>Share anonymous usage data for product improvement</p>
+                                </div>
+                                <div class="check_txt">
+                                    <input type="checkbox" checked id="" style="float: left;" disabled>
+                                    <p>Enable Filters</p>
+                                </div>
+                                <div class="check_txt">
+                                    <input type="checkbox" checked id="idfilterUpdate" style="float: left;" disabled>
+                                    <p>Check for filter updates</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-section" data-tab="Tab3">
+                            <div class="right_top" style="text-align:left !important">
+                                <div class="acc_txt">
+                                    <p style="font-size:16px;font-weight:bold;">About SmartLeapCARE</p>
+                                </div>
+                                <div class="about_txt">
+                                    <p style="color: #686161; font-size: 15px;font-weight: 500 ">Version: 1.0</p>
+                                    <p><a style="color: #e92121;" href="https://www.sutherlandglobal.com/privacy-policy" rel="noopener noreferrer" target="_blank">Privacy Policy</a></p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="option.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+/*options*/
+.container1 {
+    height:450px;
+    margin: 20px;
+   
+}
+
+.d-flex {
+    padding:5px;
+    display: flex;
+    width: 100%;
+    background-color: #1c5ea8;
+    color: #fff;
+    border-radius: 30px;
+}
+
+.d-flex-col {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.text-center {
+    text-align: center;
+}
+
+#TabsSystem .TabButton {
+    width: 100%;
+    color: #f1f1f1;
+    border: 0;
+    margin: 0;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: normal;
+    padding: 5px;
+    cursor: pointer;
+}
+.hr_3 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-top: 2px solid #f1f1f1;
+}
+#TabsSystem[data-tab="Tab1"] .TabButton[data-tab="Tab1"],
+#TabsSystem[data-tab="Tab2"] .TabButton[data-tab="Tab2"],
+#TabsSystem[data-tab="Tab3"] .TabButton[data-tab="Tab3"],
+#TabsSystem[data-tab="Tab4"] .TabButton[data-tab="Tab4"] {
+    color: #000;
+    background-color: #eaf1f5;
+    border-radius: 20px;
+    padding: 5px;
+    font-weight: 700;
+}
+
+#TabsSystem .tab-section {
+    display: none;
+}
+
+#TabsSystem[data-tab="Tab1"] .tab-section[data-tab="Tab1"],
+#TabsSystem[data-tab="Tab2"] .tab-section[data-tab="Tab2"],
+#TabsSystem[data-tab="Tab3"] .tab-section[data-tab="Tab3"],
+#TabsSystem[data-tab="Tab4"] .tab-section[data-tab="Tab4"] {
+    display: block;
+}
+.txtUrl {
+    width: 70%;
+    border: none;
+    background-color: transparent;
+}
+.btnAdd {
+    cursor:pointer;
+    color: #fff;
+    background-color: #195294;
+    padding: 3px 12px;
+    border-radius: 16px;
+}
+.dvAddurl {
+    margin-top:20px;
+    padding: 10px;
+    border: solid 2px #f1f1f1;
+    border-radius: 30px;
+}
+    tr td {
+        padding: 5px 2px;
+        font-size: 14px;
+    }
+.check_txt p{
+    font-weight:normal;
+    font-size:14px;
+    padding-left:30px;
+    text-align:left !important;
+
+}

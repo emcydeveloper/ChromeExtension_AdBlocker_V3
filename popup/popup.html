@@ -1,3 +1,5 @@
+
+
 <html>
   <head>
     <title>extension</title>
@@ -18,12 +20,29 @@
     </style>
   </head>
   <body>
-    <label class="switch">
-      <input id="app-control" type="checkbox" />
-      <span class="slider round"></span>
-    </label>
-    <div id="site-to-block"><input id="txt-site-to-block" type="text" /> <button id="btn-site-to-block">Block</button></div>
+
+
+
+    <div id="div-radio">
+      Sites blocked<input type="radio" class="radioTest" name="myRadios" value="Sitesblocked" checked="true" />
+      Allow Ad on sites<input type="radio" class="radioTest" name="myRadios" value="AllowAdOnSites" />
+    </div>
+
+
+
+    <div id="site-to-block">
+      <input id="txt-site-to-block" type="text" />
+      <button id="btn-site-to-block">Block</button>
+      <button id="dynamic-block-allow">Block Site</button>
+    </div>
+
+
+
+
+
+
     <div id="blocksite-table"></div>
+    <div id="allow-ad-site-table"></div>
 
     <div class="container" id="container">
       <div class="box_border">
@@ -36,11 +55,20 @@
               ><img src="images/Logo.png" style="padding-top: 10px"
             /></a>
             <span style="padding-top: -10px; margin-left: 40px">
-              <a href="/settings/settings.html"
+              <a href="options.html"
                 ><img src="images/settings.png" style="padding-right: 10px"
               /></a>
-              <a href="#" id="toggle_button">
-                <input type="hidden" value="D" id="idED" />
+
+
+
+
+
+
+
+
+              <a href="#" id="app-control">
+                <!-- <input type="hidden" value="D" id="idED" /> -->
+                <input type="hidden" value="D" />
                 <img src="images/logout.png" id="onoff" />
               </a>
             </span>
