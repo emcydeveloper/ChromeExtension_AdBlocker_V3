@@ -1,9 +1,10 @@
 ﻿<html>
 <head>
     <title>extension</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="options.css">
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="options.css"/>
     <link href="circle.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         .row {
             display: flex;
@@ -12,6 +13,7 @@
         html, body {
             margin: 0; /* Space from this element (entire page) and others*/
             padding: 0; /*space from content and border*/
+            font-family: sans-serif !important;
             border: none;
         }
     </style>
@@ -55,16 +57,16 @@
                                 <label for="block">Block</label> -->
 
                                 <input type="radio" id="allow" class="radioTest" name="myRadios" value="Sitesblocked" checked="true" />
-                                <label for="allow">Sites blocked</label>
+                                <label id="lb-allow" for="allow">Websites to block</label>
                                 <input type="radio" id="block" class="radioTest" name="myRadios" value="AllowAdOnSites" />
-                                <label for="block">Allow Ad on sites</label>
+                                <label id="lb-allow" for="block">Allow ads</label>
 
                             </div>
                             <div class="dvAddurl">
                                 <!-- <input class="txtUrl" type="url" id="txtUrl" placeholder="Add websites" />
                                 <button class="btnAdd" id="btnAdd">Add</button>
                                 <p style="color:red;" id="errURL"></p> -->
-                                <input id="txt-site-to-block" type="text"  placeholder="type"/>
+                                <input id="txt-site-to-block" type="text"  placeholder="https://*****"/>
                                 <button id="btn-site-to-block" style="display: none;">Block</button>
                                 <button id="dynamic-block-allow">Block Site</button>
                             </div>

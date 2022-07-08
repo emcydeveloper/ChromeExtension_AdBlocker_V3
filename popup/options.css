@@ -1,8 +1,32 @@
+body{
+    font-family: sans-serif;
+}
+
 /*options*/
 .container1 {
     height:450px;
     margin: 20px;
    
+}
+
+.btn-delete-site,.delete-site{
+    border: none;
+    background-color: transparent;
+    color: red;
+    text-decoration-line: underline;
+    font-weight: bolder;
+}
+
+.btn-delete-site,.delete-site:hover {
+    cursor: pointer;
+  }
+
+#dynamic-block-allow{
+    padding: 0px;
+}
+
+#lb-allow,#lb-block{
+    font-size: small !important;
 }
 
 .d-flex {

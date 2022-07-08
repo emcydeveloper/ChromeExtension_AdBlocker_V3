@@ -14,6 +14,9 @@ let btnDynamicUserInput = document.getElementById("dynamic-block-allow");
 
 document.getElementById("blocksite-table").style.display = "block";
 document.getElementById("allow-ad-site-table").style.display = "none";
+btnDynamicUserInput.value = "Sitesblocked";
+btnDynamicUserInput.innerText = "Block";
+btnUserInputBlock.disabled = true;
 
 // let _dynBlockSite = [];
 // let _allowAdonSites = ["dinamalar", "google", "ganesh"];
@@ -21,7 +24,7 @@ let _appControl = true;
 let adBlockStateManage = {};
 let checkLocalStorage = localStorage.hasOwnProperty("_adBlockStateManage");
 
-btnUserInputBlock.disabled = true;
+
 
 window.onload = async function getCurrentTab() {
   let queryOptions = { active: true, lastFocusedWindow: true };
@@ -136,8 +139,8 @@ function getSetLocalStorage(currentUrl) {
     chkAppControl.checked = _appControl;
     console.log(chkAppControl.checked);
     // _appControl === true
-      // ? (divUiControl.style.pointerEvents = "auto")
-      // : (divUiControl.style.pointerEvents = "none");
+    // ? (divUiControl.style.pointerEvents = "auto")
+    // : (divUiControl.style.pointerEvents = "none");
     adBlockStateManage = {
       ...adBlockStateManage,
       adBlockStatus: _appControl,
@@ -210,7 +213,7 @@ function getSetLocalStorage(currentUrl) {
         document.getElementById("blocksite-table").style.display = "block";
         document.getElementById("allow-ad-site-table").style.display = "none";
         btnDynamicUserInput.value = "Sitesblocked";
-        btnDynamicUserInput.innerText = "Block Site";
+        btnDynamicUserInput.innerText = "Block";
         tableDisplayBlockedSites(adBlockStateManage.dynBlockSite);
         break;
 
@@ -218,7 +221,7 @@ function getSetLocalStorage(currentUrl) {
         document.getElementById("blocksite-table").style.display = "none";
         document.getElementById("allow-ad-site-table").style.display = "block";
         btnDynamicUserInput.value = "AllowAdOnSites";
-        btnDynamicUserInput.innerText = "Allow Ad";
+        btnDynamicUserInput.innerText = "Allow";
         tableAdAllowedSites(adBlockStateManage.allowAdonSites);
         //tableAdAllowedSites
 
@@ -304,36 +307,36 @@ function tableDisplayBlockedSites(blockedSites) {
   document.getElementById("blocksite-table").appendChild(table);
 
   // Creating and adding data to first row of the table
-  let row_1 = document.createElement("tr");
-  let heading_1 = document.createElement("th");
-  heading_1.innerHTML = "Sr. No.";
-  let heading_2 = document.createElement("th");
-  heading_2.innerHTML = "URL";
-  let heading_3 = document.createElement("th");
-  heading_3.innerHTML = "Change Status";
+  // let row_1 = document.createElement("tr");
+  // let heading_1 = document.createElement("th");
+  // heading_1.innerHTML = "Sr. No.";
+  // let heading_2 = document.createElement("th");
+  // heading_2.innerHTML = "URL";
+  // let heading_3 = document.createElement("th");
+  // heading_3.innerHTML = "Change Status";
 
-  row_1.appendChild(heading_1);
-  row_1.appendChild(heading_2);
-  row_1.appendChild(heading_3);
-  thead.appendChild(row_1);
+  // row_1.appendChild(heading_1);
+  // row_1.appendChild(heading_2);
+  // row_1.appendChild(heading_3);
+  // thead.appendChild(row_1);
 
   // Creating and adding data to second row of the table
   getBlockedSites.map((item, index) => {
     let row = document.createElement("tr");
     row.setAttribute("id", "tableDisplayBlockedSites" + index);
 
-    let data_1 = document.createElement("td");
-    data_1.innerHTML = index;
-    data_1.setAttribute("class", "blocksite-row-data");
+    // let data_1 = document.createElement("td");
+    // data_1.innerHTML = index;
+    // data_1.setAttribute("class", "blocksite-row-data");
 
     let data_2 = document.createElement("td");
     data_2.innerHTML = item;
     data_2.setAttribute("class", "blocksite-row-data");
 
     let data_3 = document.createElement("td");
-    data_3.innerHTML = `<button id=tableDisplayBlockedSites-${item} class="btn-delete-site">Allow</button>`;
+    data_3.innerHTML = `<button id=tableDisplayBlockedSites-${item} class="btn-delete-site">Delete</button>`;
 
-    row.appendChild(data_1);
+    // row.appendChild(data_1);
     row.appendChild(data_2);
     row.appendChild(data_3);
     tbody.appendChild(row);
@@ -355,8 +358,8 @@ function tableDisplayBlockedSites(blockedSites) {
       .querySelectorAll(".blocksite-row-data");
     // console.log("**********************", rowId, data);
 
-    var id = data[0].innerHTML;
-    var url = data[1].innerHTML;
+    // var id = data[0].innerHTML;
+    var url = data[0].innerHTML;
     blockAllowHandler("allow", url);
   }
 }
@@ -383,36 +386,36 @@ function tableAdAllowedSites(blockedSites) {
   document.getElementById("allow-ad-site-table").appendChild(table);
 
   // Creating and adding data to first row of the table
-  let row_1 = document.createElement("tr");
-  let heading_1 = document.createElement("th");
-  heading_1.innerHTML = "Sr. No.";
-  let heading_2 = document.createElement("th");
-  heading_2.innerHTML = "URL";
-  let heading_3 = document.createElement("th");
-  heading_3.innerHTML = "Change Status";
+  // let row_1 = document.createElement("tr");
+  // let heading_1 = document.createElement("th");
+  // heading_1.innerHTML = "Sr. No.";
+  // let heading_2 = document.createElement("th");
+  // heading_2.innerHTML = "URL";
+  // let heading_3 = document.createElement("th");
+  // heading_3.innerHTML = "Change Status";
 
-  row_1.appendChild(heading_1);
-  row_1.appendChild(heading_2);
-  row_1.appendChild(heading_3);
-  thead.appendChild(row_1);
+  // row_1.appendChild(heading_1);
+  // row_1.appendChild(heading_2);
+  // row_1.appendChild(heading_3);
+  // thead.appendChild(row_1);
 
   // Creating and adding data to second row of the table
   blockedSites.map((item, index) => {
     let row = document.createElement("tr");
     row.setAttribute("id", "AdAllowedSites" + index);
 
-    let data_1 = document.createElement("td");
-    data_1.innerHTML = index;
-    data_1.setAttribute("class", "row-data");
+    // let data_1 = document.createElement("td");
+    // data_1.innerHTML = index;
+    // data_1.setAttribute("class", "row-data");
 
     let data_2 = document.createElement("td");
     data_2.innerHTML = item;
     data_2.setAttribute("class", "row-data");
 
     let data_3 = document.createElement("td");
-    data_3.innerHTML = `<button id=tableAdAllowedSites-${item} class="delete-site">Allow</button>`;
+    data_3.innerHTML = `<button id=tableAdAllowedSites-${item} class="delete-site">Delete</button>`;
 
-    row.appendChild(data_1);
+    // row.appendChild(data_1);
     row.appendChild(data_2);
     row.appendChild(data_3);
     tbody.appendChild(row);
@@ -431,8 +434,8 @@ function tableAdAllowedSites(blockedSites) {
 
     // console.log(data);
 
-    let id = data[0].innerHTML;
-    let url = data[1].innerHTML;
+    // let id = data[0].innerHTML;
+    let url = data[0].innerHTML;
     // console.log("allow", url);
     // adBlockStateManage.allowAdonSites = {...adBlockStateManage,allowAdonSites: [...adBlockStateManage.allowAdonSites,adBlockStateManage.allowAdonSites.filter(item => item != url)]}
 
