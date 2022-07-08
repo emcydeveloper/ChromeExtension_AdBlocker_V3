@@ -275,7 +275,8 @@ function tableDisplayBlockedSites(blockedSites) {
     data_2.setAttribute("class", "blocksite-row-data");
 
     let data_3 = document.createElement("td");
-    data_3.innerHTML = `<button id=tableDisplayBlockedSites-${item} class="btn-delete-site">Delete</button>`;
+    // data_3.innerHTML = `<button id=tableDisplayBlockedSites-${item} class="btn-delete-site">Delete</button>`;
+    data_3.innerHTML =  `<i  id=tableDisplayBlockedSites-${item} class="btn-delete-site fa fa-trash-o"></i>`
 
     // row.appendChild(data_1);
     row.appendChild(data_2);
@@ -345,7 +346,8 @@ function tableAdAllowedSites(blockedSites) {
     data_2.setAttribute("class", "row-data");
 
     let data_3 = document.createElement("td");
-    data_3.innerHTML = `<button id=tableAdAllowedSites-${item} class="delete-site">Delete</button>`;
+    // data_3.innerHTML = `<button id=tableAdAllowedSites-${item} class="delete-site">Delete</button>`;
+    data_3.innerHTML =  `<i  id=tableAdAllowedSites-${item} class="delete-site fa fa-trash-o"></i>`
 
     // row.appendChild(data_1);
     row.appendChild(data_2);
