@@ -9,6 +9,22 @@ body{
    
 }
 
+table {
+    width: 100%;
+  }
+
+
+td {
+    /* padding: 15px; */
+    border-bottom: 1px solid #ddd;
+  }
+
+  tr:hover {background-color: lightblue;}
+  
+  td {
+    text-align: center;
+  }
+
 .btn-delete-site,.delete-site{
     border: none;
     background-color: transparent;

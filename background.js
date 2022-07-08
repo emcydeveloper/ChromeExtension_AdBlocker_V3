@@ -4,7 +4,22 @@ let _dynBlockSite = [];
 let appStatus = true; //False - Disable ad blocker | True - Enable ad blocker
 let adOnSite = false; //True - Allows ads on site | False - Disable ads on sites
 
+
+// let adBlockStateManage = {}
 // chrome.storage.sync.clear("adBlockStateManage")
+if (chrome.storage.sync.get("adBlockStateManage",function({ adBlockStateManage }){
+  console.log("Available");
+}));
+else{
+  console.log("Not Available - Setting up value");
+  chrome.storage.sync.set( {adBlockStateManage: {
+    dynBlockSite: [],
+    adBlockStatus: true,
+    allowAdonSites: [],
+}} , (value) =>
+    console.log("Chrome storage sync set  - ", value)
+  );
+}
 
 chrome.tabs.onUpdated.addListener((getTabDetailsOnUpdate, changeInfo, tab) => {
   chrome.storage.sync.get(

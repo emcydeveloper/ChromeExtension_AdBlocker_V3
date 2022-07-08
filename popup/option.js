@@ -1,17 +1,10 @@
-let analytics = document.getElementById("analytics");
-let ads = document.getElementById("ads");
-let e_commerce = document.getElementById("e_commerce");
-let more = document.getElementById("more");
 let tabURL = document.getElementById("url");
-// let btnBlockStatus = document.getElementById("btn-block");
-// let btnAllowStatus = document.getElementById("btn-allow");
 let chkAppControl = document.getElementById("app-control");
 let divUiControl = document.getElementById("container");
 let txtToBlock = document.getElementById("txt-site-to-block");
 var radioContainer = document.getElementById("div-radio");
 let btnUserInputBlock = document.getElementById("btn-site-to-block");
 let btnDynamicUserInput = document.getElementById("dynamic-block-allow");
-
 document.getElementById("blocksite-table").style.display = "block";
 document.getElementById("allow-ad-site-table").style.display = "none";
 btnDynamicUserInput.value = "Sitesblocked";
@@ -47,29 +40,11 @@ window.onload = async function getCurrentTab() {
           });
         });
 
-      // setValue(
-      //   tab.url,
-      //   getBlockList.filter((items) => {
-      //     return items.tabId == tab.id;
-      //   })
-      // );
     }
   );
   getSetLocalStorage(tab.url);
 };
 
-// function setValue(url, blockedRule) {
-//   analytics.innerHTML = blockedRule.filter((item) => {
-//     return item.rulesetId == "analytics";
-//   }).length;
-//   ads.innerHTML = blockedRule.filter((item) => {
-//     return item.rulesetId == "ads";
-//   }).length;
-//   e_commerce.innerHTML = blockedRule.filter((item) => {
-//     return item.rulesetId == "socialmedia";
-//   }).length;
-//   tabURL.innerText = url;
-// }
 
 function getSetLocalStorage(currentUrl) {
   console.log("From UI - Current URL", currentUrl);
@@ -93,22 +68,6 @@ function getSetLocalStorage(currentUrl) {
     // _dynBlockSite = dynBlockSite;
     _appControl = adBlockStatus;
     chkAppControl.checked = _appControl;
-    // _appControl === true
-    //   ? (divUiControl.style.pointerEvents = "auto")
-    //   : (divUiControl.style.pointerEvents = "none");
-
-    // btnBlockStatus.disabled = dynBlockSite.some(
-    //   (item) => item.url == currentUrl
-    // );
-
-    //For future user block to button change on UI
-    // let results = adBlockStateManage.dynBlockSite.filter((getItem) =>{
-    //   btnBlockStatus.disabled = getText(currentUrl, getItem.url)
-    // }
-    // );
-    // console.log(results);
-
-    // btnAllowStatus.disabled = !btnBlockStatus.disabled;
 
     tableDisplayBlockedSites(dynBlockSite);
     tableAdAllowedSites(allowAdonSites);
@@ -119,12 +78,9 @@ function getSetLocalStorage(currentUrl) {
       adBlockStatus: _appControl,
       allowAdonSites: [],
     };
-    // btnBlockStatus.disabled = false;
-    // btnAllowStatus.disabled = !btnBlockStatus.disabled;
+
     chkAppControl.checked = _appControl;
-    // _appControl === true
-    //   ? (divUiControl.style.pointerEvents = "auto")
-    //   : (divUiControl.style.pointerEvents = "none");
+
 
     // console.log("before syn store in else", adBlockStateManage);
     setValueToStorage(adBlockStateManage);
@@ -132,15 +88,11 @@ function getSetLocalStorage(currentUrl) {
     tableAdAllowedSites(adBlockStateManage.allowAdonSites);
   }
 
-  // btnBlockStatus.addEventListener("click", () => handleBlockClick("block"));
-  // btnAllowStatus.addEventListener("click", () => handleBlockClick("allow"));
   chkAppControl.addEventListener("click", () => {
     _appControl = !_appControl;
     chkAppControl.checked = _appControl;
     console.log(chkAppControl.checked);
-    // _appControl === true
-    // ? (divUiControl.style.pointerEvents = "auto")
-    // : (divUiControl.style.pointerEvents = "none");
+
     adBlockStateManage = {
       ...adBlockStateManage,
       adBlockStatus: _appControl,
@@ -230,17 +182,9 @@ function getSetLocalStorage(currentUrl) {
       default:
         console.error("Error in radio");
     }
-    // if(e.target.value === 'color')
-    // 	document.getElementsByTagName("fieldset")[0].style.backgroundColor = e.target.value;
+
   };
 
-  function handleBlockClick(getHandler) {
-    // btnAllowStatus.disabled = !btnAllowStatus.disabled;
-    // btnBlockStatus.disabled = !btnBlockStatus.disabled;
-    blockAllowHandler(getHandler, currentUrl);
-    // pStatus.innerText = `You chossen to - ${getHandler}`;
-  }
-  // console.log("_____________adBlockStateManage", adBlockStateManage);
 }
 
 function blockAllowHandler(getHandler, currentUrl) {
@@ -250,21 +194,18 @@ function blockAllowHandler(getHandler, currentUrl) {
         ...adBlockStateManage.dynBlockSite,
         { url: currentUrl, alteredUrl: currentUrl + "alter", type: true },
       ];
-      // btnAllowStatus.disabled = false;
-      // btnBlockStatus.disabled = true;
+
       break;
     case "allow":
       adBlockStateManage.dynBlockSite.map((item) =>
         item.url == currentUrl ? (item.type = false) : item
       );
-      // btnBlockStatus.disabled = false;
-      // btnAllowStatus.disabled = true;
+
       break;
     default:
       console.error("Error in switch case while handling block/allow");
   }
-  // let { dynBlockSite, adBlockStatus, allowAdonSites } = adBlockStateManage;
-  // console.log("dynBlockSite", adBlockStateManage.dynBlockSite);
+
 
   adBlockStateManage.dynBlockSite = adBlockStateManage.dynBlockSite.filter(
     (item) => item.type != false
@@ -364,15 +305,6 @@ function tableDisplayBlockedSites(blockedSites) {
   }
 }
 
-function getText(value, toSearchVal) {
-  // console.log(value, toSearchVal);
-  return (
-    value
-      .toLowerCase()
-      .toString()
-      .indexOf(toSearchVal.toLowerCase().toString()) >= 0
-  );
-}
 
 function tableAdAllowedSites(blockedSites) {
   document.getElementById("allow-ad-site-table").innerHTML = "";
@@ -448,3 +380,12 @@ function tableAdAllowedSites(blockedSites) {
 }
 
 // console.log(JSON.stringify(adBlockStateManage));
+function getText(value, toSearchVal) {
+  // console.log(value, toSearchVal);
+  return (
+    value
+      .toLowerCase()
+      .toString()
+      .indexOf(toSearchVal.toLowerCase().toString()) >= 0
+  );
+}

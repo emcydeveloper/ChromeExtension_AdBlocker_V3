@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="style.css" />
     <link href="circle.css" rel="stylesheet" />
     <link rel="stylesheet" href="style_v1.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
       .row {
         display: flex;
@@ -21,24 +22,6 @@
   </head>
   <body>
 
-<div id="settings" style="display: none">
-
-    <div id="div-radio">
-      Sites blocked<input type="radio" class="radioTest" name="myRadios" value="Sitesblocked" checked="true" />
-      Allow Ad on sites<input type="radio" class="radioTest" name="myRadios" value="AllowAdOnSites" />
-    </div>
-
-
-    <div id="site-to-block">
-      <input id="txt-site-to-block" type="text" />
-      <button id="btn-site-to-block">Block</button>
-      <button id="dynamic-block-allow">Block Site</button>
-    </div>
-  
-
-    <div id="blocksite-table"></div>
-    <div id="allow-ad-site-table"></div>
-  </div>
   
     <div class="container" id="container">
       <div class="box_border">
@@ -55,22 +38,16 @@
                 ><img src="images/settings.png" style="padding-right: 10px"
               /></a>
 
-
-
-
-
-
-
-
               <a href="#" id="app-control">
                 <!-- <input type="hidden" value="D" id="idED" /> -->
                 <input type="hidden" value="D" />
                 <img src="images/logout.png" id="onoff" />
+                
               </a>
             </span>
           </div>
         </nav>
-        <div class="txt_cntr">
+        <div class="txt_cntr" id="on-off-container">
           <p class="row_header1">FingerPrint Features Tracked</p>
           <p class="row_header2"><span id="categories"></span></p>
           <img src="images/graph.png" class="img_s" style="width: 50%" />
