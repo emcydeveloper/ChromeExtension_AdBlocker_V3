@@ -67,3 +67,9 @@ height: 10%;
 #adurl-blocked-getMe,#adurl-blocked-analytics,#adurl-blocked-socialmedia{
   margin: 20px;
 }
+
+#dynamic-blocked-url-items {
+  height: 90%;
+  width: 100%;  
+  overflow-y: auto;
+}

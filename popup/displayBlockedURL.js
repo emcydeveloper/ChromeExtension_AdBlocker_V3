@@ -63,7 +63,7 @@ function displayBlockList(getList) {
   let analyticsHtml = null;
   let socialmediaHtml = null;
 
-  let formHTML = null;
+  let formHTML = "";
 
   let ads = getList.filter((item) => {
     return item.rulesetId == "ads";

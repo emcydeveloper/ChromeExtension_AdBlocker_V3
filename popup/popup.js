@@ -55,7 +55,7 @@ function setValue(url, blockedRule) {
   e_commerce.innerHTML = blockedRule.filter((item) => {
     return item.rulesetId == "socialmedia";
   }).length;
-  tabURL.innerText = url;
+  tabURL.innerText = url.split('.com')[0]+".com";
 }
 
 function getSetLocalStorage(currentUrl) {

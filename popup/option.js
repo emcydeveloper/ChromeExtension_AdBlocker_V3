@@ -10,6 +10,7 @@ document.getElementById("allow-ad-site-table").style.display = "none";
 btnDynamicUserInput.value = "Sitesblocked";
 btnDynamicUserInput.innerText = "Block";
 btnUserInputBlock.disabled = true;
+btnDynamicUserInput.disabled=true;
 
 // let _dynBlockSite = [];
 // let _allowAdonSites = ["dinamalar", "google", "ganesh"];
@@ -103,6 +104,7 @@ function getSetLocalStorage(currentUrl) {
   txtToBlock.addEventListener("keydown", (getEvent) => {
     if (getEvent.target.value.length > 3) {
       btnUserInputBlock.disabled = false;
+      btnDynamicUserInput.disabled = false;
       let results = adBlockStateManage.dynBlockSite.filter((getItem) =>
         getText(getItem.url, getEvent.target.value)
       );
@@ -111,6 +113,7 @@ function getSetLocalStorage(currentUrl) {
         : tableDisplayBlockedSites(adBlockStateManage.dynBlockSite);
     } else {
       btnUserInputBlock.disabled = true;
+      btnDynamicUserInput.disabled = true;
       tableDisplayBlockedSites(adBlockStateManage.dynBlockSite);
     }
   });
