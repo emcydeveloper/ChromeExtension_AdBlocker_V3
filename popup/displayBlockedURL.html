@@ -1,0 +1,39 @@
+﻿<html>
+  <head>
+    <title>extension</title>
+    <!-- <link rel="stylesheet" href="style.css"/> -->
+    <link rel="stylesheet" href="displayBlockedURL.css" />
+  </head>
+  <body>
+    <div class="container">
+      <section id="header">
+        <div class="box_border">
+          <nav class="navbar navbar-inverse" style="margin-left: -15px; margin-right: -15px">
+            <div class="navbar-header">
+              <a class="navbar-brand" href=""><img src="images/Logo.png" style="padding-top: 10px"/></a>
+              <span style="padding-top: -10px; margin-left: 40px">
+                <a href="options.html"><img src="images/settings.png" style="padding-right: 10px"/></a>
+                <a href="#" id="app-control"><input type="hidden" value="D" /><img src="images/logout.png" id="onoff" /></a>
+              </span>
+            </div>
+          </nav>
+        </div>
+      </section>
+      <section id="content">
+        <div id="blocked-url-items">
+            <h3>Blocked trackers</h3>
+            <div id="dynamic-blocked-url-items">
+
+            </div>
+            
+        </div>
+      </section>
+      <section id="footer">
+        <!-- <input type="button" id="btn-back" value="Back"> -->
+        <a href="popup.html"><button id="btn-back" > Back</button></a>
+        
+      </section>
+    </div>
+    <script src="displayBlockedURL.js"></script>
+  </body>
+</html>
