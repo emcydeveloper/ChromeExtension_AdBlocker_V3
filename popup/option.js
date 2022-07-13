@@ -5,20 +5,20 @@ let txtToBlock = document.getElementById("txt-site-to-block");
 var radioContainer = document.getElementById("div-radio");
 let btnUserInputBlock = document.getElementById("btn-site-to-block");
 let btnDynamicUserInput = document.getElementById("dynamic-block-allow");
+
 document.getElementById("blocksite-table").style.display = "block";
 document.getElementById("allow-ad-site-table").style.display = "none";
+
 btnDynamicUserInput.value = "Sitesblocked";
 btnDynamicUserInput.innerText = "Block";
 btnUserInputBlock.disabled = true;
-btnDynamicUserInput.disabled=true;
+btnDynamicUserInput.disabled = true;
 
 // let _dynBlockSite = [];
 // let _allowAdonSites = ["dinamalar", "google", "ganesh"];
 let _appControl = true;
 let adBlockStateManage = {};
 let checkLocalStorage = localStorage.hasOwnProperty("_adBlockStateManage");
-
-
 
 window.onload = async function getCurrentTab() {
   let queryOptions = { active: true, lastFocusedWindow: true };
@@ -40,12 +40,10 @@ window.onload = async function getCurrentTab() {
             ];
           });
         });
-
     }
   );
   getSetLocalStorage(tab.url);
 };
-
 
 function getSetLocalStorage(currentUrl) {
   console.log("From UI - Current URL", currentUrl);
@@ -81,7 +79,6 @@ function getSetLocalStorage(currentUrl) {
     };
 
     chkAppControl.checked = _appControl;
-
 
     // console.log("before syn store in else", adBlockStateManage);
     setValueToStorage(adBlockStateManage);
@@ -185,9 +182,7 @@ function getSetLocalStorage(currentUrl) {
       default:
         console.error("Error in radio");
     }
-
   };
-
 }
 
 function blockAllowHandler(getHandler, currentUrl) {
@@ -208,7 +203,6 @@ function blockAllowHandler(getHandler, currentUrl) {
     default:
       console.error("Error in switch case while handling block/allow");
   }
-
 
   adBlockStateManage.dynBlockSite = adBlockStateManage.dynBlockSite.filter(
     (item) => item.type != false
@@ -279,7 +273,7 @@ function tableDisplayBlockedSites(blockedSites) {
 
     let data_3 = document.createElement("td");
     // data_3.innerHTML = `<button id=tableDisplayBlockedSites-${item} class="btn-delete-site">Delete</button>`;
-    data_3.innerHTML =  `<i  id=tableDisplayBlockedSites-${item} class="btn-delete-site fa fa-trash-o"></i>`
+    data_3.innerHTML = `<i  id=tableDisplayBlockedSites-${item} class="btn-delete-site fa fa-trash-o"></i>`;
 
     // row.appendChild(data_1);
     row.appendChild(data_2);
@@ -308,7 +302,6 @@ function tableDisplayBlockedSites(blockedSites) {
     blockAllowHandler("allow", url);
   }
 }
-
 
 function tableAdAllowedSites(blockedSites) {
   document.getElementById("allow-ad-site-table").innerHTML = "";
@@ -350,7 +343,7 @@ function tableAdAllowedSites(blockedSites) {
 
     let data_3 = document.createElement("td");
     // data_3.innerHTML = `<button id=tableAdAllowedSites-${item} class="delete-site">Delete</button>`;
-    data_3.innerHTML =  `<i  id=tableAdAllowedSites-${item} class="delete-site fa fa-trash-o"></i>`
+    data_3.innerHTML = `<i  id=tableAdAllowedSites-${item} class="delete-site fa fa-trash-o"></i>`;
 
     // row.appendChild(data_1);
     row.appendChild(data_2);

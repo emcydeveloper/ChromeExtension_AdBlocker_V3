@@ -6,19 +6,35 @@ async function fetchRules() {
   let fetchSocialMediaRules = await fetch("../socialmedia.json");
 
   let analyticsRules = await fetchAnalyticsRules.json();
-  let adsRules = await fetchAdsRules.json()
-  let socialMediaRules = await fetchSocialMediaRules.json()
+  let adsRules = await fetchAdsRules.json();
+  let socialMediaRules = await fetchSocialMediaRules.json();
 
   analyticsRules.map(
-    (items) => (getRules = [...getRules, {"id":items.id,"ruleSet":"analytics","url":items.condition.urlFilter}])
+    (items) =>
+      (getRules = [
+        ...getRules,
+        { id: items.id, ruleSet: "analytics", url: items.condition.urlFilter },
+      ])
   );
 
   adsRules.map(
-    (items) => (getRules = [...getRules, {"id":items.id,"ruleSet":"ads","url":items.condition.urlFilter}])
+    (items) =>
+      (getRules = [
+        ...getRules,
+        { id: items.id, ruleSet: "ads", url: items.condition.urlFilter },
+      ])
   );
 
   socialMediaRules.map(
-    (items) => (getRules = [...getRules, {"id":items.id,"ruleSet":"socialmedia","url":items.condition.urlFilter}])
+    (items) =>
+      (getRules = [
+        ...getRules,
+        {
+          id: items.id,
+          ruleSet: "socialmedia",
+          url: items.condition.urlFilter,
+        },
+      ])
   );
 }
 
@@ -75,10 +91,9 @@ function displayBlockList(getList) {
     return item.rulesetId == "socialmedia";
   });
 
-
   if (ads.length > 0) {
-    let getMe = getRuleUrl(ads)
-    console.log("getMe",getMe)
+    let getMe = getRuleUrl(ads);
+    console.log("getMe", getMe);
     adsHtml = `<div id = "adurl-blocked-getMe"><h3 id="head-adurl-blocked">Ads</h3>`;
     adsHtml += getMe.map((item) => {
       return `<p>${item.url}</p>`;
@@ -87,7 +102,7 @@ function displayBlockList(getList) {
   }
 
   if (analytics.length > 0) {
-    let getMe = getRuleUrl(analytics)
+    let getMe = getRuleUrl(analytics);
     analyticsHtml = `<div id = "adurl-blocked-analytics"><h3 id="head-adurl-blocked">Analytics</h3>`;
     analyticsHtml += getMe.map((item) => {
       return `<p>${item.url}</p>`;
@@ -96,7 +111,7 @@ function displayBlockList(getList) {
   }
 
   if (socialmedia.length > 0) {
-    let getMe = getRuleUrl(socialmedia)
+    let getMe = getRuleUrl(socialmedia);
     socialmediaHtml = `<div id = "adurl-blocked-socialmedia"><h3 id="head-adurl-blocked">Social media</h3>`;
     socialmediaHtml += getMe.map((item) => {
       return `<p>${item.url}</p>`;
@@ -108,16 +123,18 @@ function displayBlockList(getList) {
   console.log("analyticsHtml", analyticsHtml);
   console.log("socialmediaHtml", socialmediaHtml);
 
-  document.getElementById("dynamic-blocked-url-items").innerHTML = formHTML.replace(/,/g, '');
+  document.getElementById("dynamic-blocked-url-items").innerHTML =
+    formHTML.replace(/,/g, "");
 }
 
+function getRuleUrl(list) {
+  console.log("getRuleUrl", list);
 
-function getRuleUrl(list){
-    console.log("getRuleUrl",list)
-
-    let setRuleUrl = list.map((item) => {
-        let [abc] = getRules.filter(it => {return it.id == item.ruleId && item.rulesetId == it.ruleSet})
-        return abc;
-  })
-        return setRuleUrl;
+  let setRuleUrl = list.map((item) => {
+    let [abc] = getRules.filter((it) => {
+      return it.id == item.ruleId && item.rulesetId == it.ruleSet;
+    });
+    return abc;
+  });
+  return setRuleUrl;
 }
