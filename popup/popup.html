@@ -1,12 +1,15 @@
-
-
 <html>
   <head>
     <title>extension</title>
     <link rel="stylesheet" href="style.css" />
     <link href="circle.css" rel="stylesheet" />
     <link rel="stylesheet" href="commom.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="popup.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="jquery.js"></script>
     <style>
       .row {
         display: flex;
@@ -21,8 +24,6 @@
     </style>
   </head>
   <body>
-
-  
     <div class="container" id="container">
       <div class="box_border">
         <nav
@@ -42,7 +43,6 @@
                 <!-- <input type="hidden" value="D" id="idED" /> -->
                 <input type="hidden" value="D" />
                 <img src="images/logout.png" id="onoff" />
-                
               </a>
             </span>
           </div>
@@ -50,7 +50,10 @@
         <div class="txt_cntr" id="on-off-container">
           <p class="row_header1">FingerPrint Features Tracked</p>
           <p class="row_header2"><span id="categories"></span></p>
-          <img src="images/graph.png" class="img_s" style="width: 50%" />
+          <a href="securityPreference.html">
+            <img src="images/graph.png" class="img_s" style="width: 50%" />
+          </a>
+
           <div class="hr"></div>
           <p style="color: #999393" id="url">no page loaded</p>
           <p style="color: #999393">
@@ -88,16 +91,18 @@
             <img src="images/analytics.png" class="img_s" style="width: 50%" />
           </div>
           <div class="column">
-            
-            <a href="displayBlockedURL.html"><span class="spn_number" id="analytics">0</span></a>
+            <a href="displayBlockedURL.html"
+              ><span class="spn_number" id="analytics">0</span></a
+            >
           </div>
           <div class="column" style="padding-left: 25px">
             <img src="images/ads.png" class="img_s" style="width: 50%" />
           </div>
           <div class="column">
             <input type="hidden" value="0" id="ads1" />
-            <a href="displayBlockedURL.html"><span class="spn_number" id="ads">0</span></a>
-            
+            <a href="displayBlockedURL.html"
+              ><span class="spn_number" id="ads">0</span></a
+            >
           </div>
         </div>
         <div class="row">
@@ -115,13 +120,17 @@
             <img src="images/e_commerce.png" class="img_s" style="width: 50%" />
           </div>
           <div class="column">
-            <a href="displayBlockedURL.html"><span class="spn_number" id="e_commerce">0</span></a>
+            <a href="displayBlockedURL.html"
+              ><span class="spn_number" id="e_commerce">0</span></a
+            >
           </div>
           <div class="column" style="padding-left: 25px">
             <img src="images/more.png" class="img_s" style="width: 50%" />
           </div>
           <div class="column">
-            <a href="displayBlockedURL.html"><span class="spn_number" id="more">0</span></a>
+            <a href="displayBlockedURL.html"
+              ><span class="spn_number" id="more">0</span></a
+            >
           </div>
         </div>
         <div class="row">
@@ -135,7 +144,7 @@
           </div>
         </div>
       </div>
-      
+
       <div class="box_border" style="margin-top: 10px">
         <div class="row1">
           <span>

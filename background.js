@@ -5,8 +5,6 @@ let appStatus = true; //False - Disable ad blocker | True - Enable ad blocker
 let adOnSite = false; //True - Allows ads on site | False - Disable ads on sites
 
 
-// let adBlockStateManage = {}
-// chrome.storage.sync.clear("adBlockStateManage")
 if (chrome.storage.sync.get("adBlockStateManage",function({ adBlockStateManage }){
   console.log("Available");
 }));
@@ -32,7 +30,7 @@ chrome.tabs.onUpdated.addListener((getTabDetailsOnUpdate, changeInfo, tab) => {
       let { dynBlockSite, adBlockStatus, allowAdonSites } = adBlockStateManage;
       _dynBlockSite = [...dynBlockSite];
       appStatus = adBlockStatus;
-      console.log("adOnSite", adOnSite);
+      // console.log("adOnSite", adOnSite);
       console.log("Current URL from background", tab);
 
       adOnSite = allowAdonSites.some((sites) => {
@@ -40,26 +38,14 @@ chrome.tabs.onUpdated.addListener((getTabDetailsOnUpdate, changeInfo, tab) => {
         return sites === tab.url;
         // "ganesh"==="ganesh"
       });
-      // console.log("|||||||||||||||||||||||||||||||||||||||",allowAdonSites.length > 0)
 
-      // if(allowAdonSites.length > 0) {
-      //   console.log("|||||||||||||||||||||||||||||||||||||||")
-      //   allowAdonSites.map((sites) => {
-      //     console.log("******************", tab.url, sites);
-      //     adOnSite = getText(tab.url, sites);
-      //     // return sites === tab.url;
-      //     // "ganesh"==="ganesh"
-      //   });
-      // } else {
-      //   adOnSite = false;
-      // }
 
-      console.log("adOnSite", adOnSite);
+      // console.log("adOnSite", adOnSite);
 
-      console.log("adOnSite", adOnSite);
-      console.log("updated data dynBlockSite", _dynBlockSite);
-      console.log("adBlockStatus from UI", adBlockStatus);
-      console.log("appStatus", appStatus);
+      // console.log("adOnSite", adOnSite);
+      // console.log("updated data dynBlockSite", _dynBlockSite);
+      // console.log("adBlockStatus from UI", adBlockStatus);
+      // console.log("appStatus", appStatus);
 
       if (appStatus === true && adOnSite === false) {
         console.log("App Enabled");
@@ -79,7 +65,7 @@ function disableExtension() {
 }
 
 function enableExtension(getTabDetailsOnUpdate, changeInfo, tab) {
-  console.log(changeInfo.status);
+  // console.log(changeInfo.status);
 
   switch (changeInfo.status) {
     case "loading":
@@ -99,14 +85,14 @@ function setBadgeCount(count = 0, tabId) {
 }
 
 function getRulesStatus(getTabDetailsOnUpdate, tab) {
-  console.log("Inside getRulesStatus complete");
+  // console.log("Inside getRulesStatus complete");
   chrome.declarativeNetRequest.updateEnabledRulesets({
     enableRulesetIds: ["ads", "analytics", "socialmedia"],
   });
   chrome.declarativeNetRequest.getMatchedRules(
     { tabId: getTabDetailsOnUpdate },
     (matchedRulesInTab) => {
-      console.log("matchedRulesInTab", matchedRulesInTab);
+      // console.log("matchedRulesInTab", matchedRulesInTab);
       if (matchedRulesInTab != undefined) {
         let matchedRuleCount = matchedRulesInTab.rulesMatchedInfo.length;
 
@@ -209,7 +195,7 @@ function dynamicRulesHandler(getItm) {
 }
 
 function getText(value, toSearchVal) {
-  console.log("getText", value, toSearchVal);
+  // console.log("getText", value, toSearchVal);
   return (
     value
       .toLowerCase()

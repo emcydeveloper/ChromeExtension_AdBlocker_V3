@@ -1,0 +1,68 @@
+﻿<html>
+  <head>
+    <title>extension</title>
+    <!-- <link rel="stylesheet" href="style.css"/> -->
+    <link rel="stylesheet" href="securityPreference.css" />
+    <link rel="stylesheet" href="commom.css" />
+  </head>
+  <body>
+    <div class="container">
+      <section id="header">
+        <div class="box_border">
+          <nav class="navbar navbar-inverse" style="margin-left: -15px; margin-right: -15px">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="popup.html"><img src="images/Logo.png" style="padding-top: 10px"/></a>
+              <span style="padding-top: -10px; margin-left: 40px">
+                <a href="options.html"><img src="images/settings.png" style="padding-right: 10px"/></a>
+                <a href="#" id="app-control"><input type="hidden" value="D" /><img src="images/logout.png" id="onoff" /></a>
+              </span>
+            </div>
+          </nav>
+        </div>
+      </section>
+      <section id="content">
+        <div id="security-preference">
+          
+        <table>
+          <caption>Security preference</caption>
+          <tr>
+            <td>Auto fill</td>
+            <td><label class="switch">
+              <input id="autofillEnabled" type="checkbox">
+              <span class="slider round"></span>
+            </label></td>
+          </tr>
+          <tr>
+            <td>Password manager</td>
+            <td><label class="switch">
+              <input id="passwordSavingEnabled" type="checkbox">
+              <span class="slider round"></span>
+            </label></td>
+          </tr>
+          <tr>
+            <td>Safe browsing</td>
+            <td><label class="switch">
+              <input id="safeBrowsingEnabled" type="checkbox">
+              <span class="slider round"></span>
+            </label></td>
+          </tr>
+          <tr>
+            <td>Do not track</td>
+            <td><label class="switch">
+              <input id="doNotTrackEnabled" type="checkbox">
+              <span class="slider round"></span>
+            </label></td>
+          </tr>
+        </table>
+          
+      </div>
+      </section>
+      <section id="footer">
+        <!-- <input type="button" id="btn-back" value="Back"> -->
+        <!-- <a href="popup.html"><button id="btn-back" > Back</button></a> -->
+        
+      </section>
+    </div>
+    <script src="securityPreference.js"></script>
+  </body>
+</html>
