@@ -17,6 +17,23 @@ body {
 height: 10%;
 }
 
+#content{
+  background-color: white;
+  height: 55%;
+  margin: 10px;
+  /* border: 1px solid black; */
+}
+#footer{
+  background-color: white;
+  height: 30%;
+  margin: 10px;
+}
+
+#brief-items{
+  padding-top: 30px;
+  font-size: small;
+}
+
 .box_border {
   padding-bottom: 06px;
   margin-right: 15px;
@@ -41,16 +58,12 @@ height: 10%;
 .navbar-brand {
   padding: 0px 0px 0px 20px !important;
 }
-#content{
-  background-color: white;
-  height: 75%;
-  margin: 10px;
-  /* border: 1px solid black; */
-}
+
 #security-preference {
   height: 90%;
   width: 100%;  
-  overflow-y: auto;
+  /* overflow-y: auto; */
+  /* padding: 5px; */
 }
 
 
@@ -116,9 +129,12 @@ input:checked + .slider:before {
 
 table{
   width: 85%;
-  margin: 20px;
+  margin: 10px;
 }
-
+table>caption{
+  text-align: left;
+  margin: 10px;;
+}
 
 td {
   height: 50px;

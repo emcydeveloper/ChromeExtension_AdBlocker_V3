@@ -12,6 +12,39 @@ let _appControl = true;
 let adBlockStateManage = {};
 let checkLocalStorage = localStorage.hasOwnProperty("_adBlockStateManage");
 
+
+/******************************************************/
+
+function init() {
+  var port = null;
+  document.getElementById("testing").addEventListener('click', function () {
+      filename = "hostapp/VRConsoleApp.exe";
+      var analyticsCount = document.getElementById("analytics").innerHTML;
+      var AdsCount = document.getElementById("ads").innerHTML;
+      var ECommerceCount = document.getElementById("e_commerce").innerHTML;
+      var OthersCount = document.getElementById("more").innerHTML;
+      //chrome.extension.connectNative("adhost");
+      chrome.runtime.sendNativeMessage('adhost', { "Analytics": 1, "Ads": 2, "ECommerce": 3, "Others": 4,"Name":"Chrome","status":"On" },
+          function (response) {
+            console.log(response);
+              if (typeof chrome.runtime.lastError === "undefined" || chrome.runtime.lastError.message.indexOf("not found") === -1) {
+                   success = true;
+                  //alert('Exe already running')
+              }
+          });
+
+  });
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
+
+/******************************************************/
+
+
+
+
+
 let autofillEnabled = new Promise((res, rej) => {
   chrome.privacy.services.autofillEnabled.get({}, function (details) {
     res(details.value);
@@ -46,31 +79,7 @@ Promise.all([autofillEnabled, passwordSavingEnabled, safeBrowsingEnabled,doNotTr
   console.log("Alllllllllllllllllll - ",values);
 });
 
-$(function(){
-  $('.text-box').keyup(function(){
-    if ($('.text-box').val() == '') {
-      $('.circle-inner, .gauge-copy').css({
-        'transform' : 'rotate(-45deg)' 
-      });
-      $('.gauge-copy').css({
-        'transform' : 'translate(-50%, -50%) rotate(0deg)'
-      });
-      $('.percentage').text('0 %');
-    } else if($('.text-box').val() >= 0 && $('.text-box').val() <= 100) {
-      var dVal = $(this).val();
-      var newVal = dVal * 1.8 - 45;
-      $('.circle-inner, .gauge-copy').css({
-        'transform' : 'rotate(' + newVal + 'deg)' 
-      });
-      $('.gauge-copy').css({
-        'transform' : 'translate(-50%, -50%) rotate(' + dVal * 1.8 + 'deg)'
-      });
-      $('.percentage').text(dVal + ' %');
-    } else {
-      $('.percentage').text('Invalid input value');
-    }
-  });
-});
+
 
 window.onload = async function getCurrentTab() {
   let queryOptions = { active: true, lastFocusedWindow: true };

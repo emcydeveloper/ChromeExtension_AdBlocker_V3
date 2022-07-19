@@ -4,6 +4,7 @@
     <!-- <link rel="stylesheet" href="style.css"/> -->
     <link rel="stylesheet" href="securityPreference.css" />
     <link rel="stylesheet" href="commom.css" />
+    <script src="jquery.js"></script>
   </head>
   <body>
     <div class="container">
@@ -25,42 +26,48 @@
           
         <table>
           <caption>Security preference</caption>
-          <tr>
-            <td>Auto fill</td>
+          <tr id="tr-autofillCreditCardEnabled">
+            <td id="td-autofillCreditCardEnabled">Credit card auto fill</td>
             <td><label class="switch">
-              <input id="autofillEnabled" type="checkbox">
+              <input id="autofillCreditCardEnabled" type="checkbox">
               <span class="slider round"></span>
             </label></td>
           </tr>
-          <tr>
-            <td>Password manager</td>
+          <tr id="tr-passwordSavingEnabled">
+            <td id="td-passwordSavingEnabled">Password manager</td>
             <td><label class="switch">
               <input id="passwordSavingEnabled" type="checkbox">
               <span class="slider round"></span>
             </label></td>
           </tr>
-          <tr>
-            <td>Safe browsing</td>
+          <tr id="tr-safeBrowsingEnabled">
+            <td id="td-safeBrowsingEnabled">Safe browsing</td>
             <td><label class="switch">
               <input id="safeBrowsingEnabled" type="checkbox">
               <span class="slider round"></span>
             </label></td>
           </tr>
-          <tr>
-            <td>Do not track</td>
+          <tr id="tr-doNotTrackEnabled">
+            <td id="td-doNotTrackEnabled">Do not track</td>
             <td><label class="switch">
               <input id="doNotTrackEnabled" type="checkbox">
               <span class="slider round"></span>
             </label></td>
           </tr>
+          <tr id="tr-hyperlinkAuditingEnabled">
+            <td id="td-hyperlinkAuditingEnabled">Hyperlink auditing enabled</td>
+            <td><label class="switch">
+              <input id="hyperlinkAuditingEnabled" type="checkbox">
+              <span class="slider round"></span>
+            </label></td>
+          </tr>
         </table>
-          
       </div>
       </section>
       <section id="footer">
         <!-- <input type="button" id="btn-back" value="Back"> -->
         <!-- <a href="popup.html"><button id="btn-back" > Back</button></a> -->
-        
+        <p id="brief-items"></p>
       </section>
     </div>
     <script src="securityPreference.js"></script>
