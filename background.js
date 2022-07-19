@@ -4,41 +4,55 @@ let _dynBlockSite = [];
 let appStatus = true; //False - Disable ad blocker | True - Enable ad blocker
 let adOnSite = false; //True - Allows ads on site | False - Disable ads on sites
 
-
-if (chrome.storage.sync.get("adBlockStateManage",function({ adBlockStateManage }){
-  console.log("Available");
-}));
-else{
-  console.log("Not Available - Setting up value");
-  chrome.storage.sync.set( {adBlockStateManage: {
-    dynBlockSite: [],
-    adBlockStatus: true,
-    allowAdonSites: [],
-}} , (value) =>
-    console.log("Chrome storage sync set  - ", value)
-  );
-}
+chrome.storage.sync.get(
+  "adBlockStateManage",
+  ({ adBlockStateManage })=> {
+    if (typeof adBlockStateManage === "undefined") {
+      console.log("Not Available - Setting up value");
+      chrome.storage.sync.set(
+        {
+          adBlockStateManage: {
+            dynBlockSite: [],
+            adBlockStatus: true,
+            allowAdonSites: [],
+          },
+        },
+        () =>
+          console.log("Not Available and configured values are - ", {
+            dynBlockSite: [],
+            adBlockStatus: true,
+            allowAdonSites: [],
+          })
+      );
+    } else {
+      console.log("Available in Storage - ", adBlockStateManage);
+    }
+  }
+);
 
 chrome.tabs.onUpdated.addListener((getTabDetailsOnUpdate, changeInfo, tab) => {
   chrome.storage.sync.get(
     "adBlockStateManage",
     function ({ adBlockStateManage }) {
       console.log(
-        "chrome.storage.sync.get from background",
+        "chrome.storage.sync.get from background JS",
         adBlockStateManage
       );
       let { dynBlockSite, adBlockStatus, allowAdonSites } = adBlockStateManage;
       _dynBlockSite = [...dynBlockSite];
       appStatus = adBlockStatus;
       // console.log("adOnSite", adOnSite);
-      console.log("Current URL from background", tab);
+      console.log("Current URL from background JS", tab);
 
       adOnSite = allowAdonSites.some((sites) => {
-        console.log("*******adOnSite TEsting***********",sites,tab.url,sites==tab.url);
+        console.log(
+          "*******adOnSite*******",
+          sites,
+          tab.url,
+          sites == tab.url
+        );
         return sites === tab.url;
-        // "ganesh"==="ganesh"
       });
-
 
       // console.log("adOnSite", adOnSite);
 
@@ -72,7 +86,8 @@ function enableExtension(getTabDetailsOnUpdate, changeInfo, tab) {
       // chrome.declarativeNetRequest.getDynamicRules(dynamicRulesHandler);
       break;
     case "complete":
-      chrome.declarativeNetRequest.getDynamicRules(dynamicRulesHandler);
+      // chrome.declarativeNetRequest.getDynamicRules(dynamicRulesHandler);
+      chrome.declarativeNetRequest.getDynamicRules(get => console.log("getDynamicRules from background JS - ", get));
       getRulesStatus(getTabDetailsOnUpdate, tab);
       break;
     default:
@@ -134,65 +149,7 @@ function getRulesStatus(getTabDetailsOnUpdate, tab) {
   );
 }
 
-function updateDynamicRules(deleteItems, formRules) {
-  chrome.declarativeNetRequest.updateDynamicRules({
-    removeRuleIds: deleteItems,
-    addRules: formRules,
-  });
-}
 
-function dynamicRulesHandler(getItm) {
-  let deleteItems = [];
-  let formRules = [];
-  // let blockUrls = ["goo"];
-  let blockUrls = [];
-
-  let dynBlockSite = _dynBlockSite;
-  console.log("dynBlockSite", dynBlockSite);
-  if (dynBlockSite.length > 0) {
-    dynBlockSite.map((item) => (blockUrls = [...blockUrls, item.url]));
-    // if (dynBlockSite.length) {
-    console.log("URLS to block : ", blockUrls);
-    getItm.map((itm) => {
-      deleteItems = [...deleteItems, itm.id];
-    });
-
-    blockUrls.forEach((domain, index) => {
-      let id = index + 1;
-      formRules = [
-        ...formRules,
-        {
-          id: id,
-          priority: 1,
-          action: { type: "block" },
-          condition: { urlFilter: domain, resourceTypes: ["main_frame"] },
-        },
-      ];
-    });
-
-    updateDynamicRules(deleteItems, formRules);
-    // chrome.declarativeNetRequest.getDynamicRules((a) =>console.log(a));
-  } else {
-    getItm.map((itm) => {
-      deleteItems = [...deleteItems, itm.id];
-    });
-
-    blockUrls.forEach((domain, index) => {
-      let id = index + 1;
-      formRules = [
-        ...formRules,
-        {
-          id: id,
-          priority: 1,
-          action: { type: "block" },
-          condition: { urlFilter: domain, resourceTypes: ["main_frame"] },
-        },
-      ];
-    });
-
-    updateDynamicRules(deleteItems, formRules);
-  }
-}
 
 function getText(value, toSearchVal) {
   // console.log("getText", value, toSearchVal);
@@ -203,3 +160,65 @@ function getText(value, toSearchVal) {
       .indexOf(toSearchVal.toLowerCase().toString()) >= 0
   );
 }
+
+
+
+// function updateDynamicRules(deleteItems, formRules) {
+//   chrome.declarativeNetRequest.updateDynamicRules({
+//     removeRuleIds: deleteItems,
+//     addRules: formRules,
+//   });
+// }
+
+// function dynamicRulesHandler(getItm) {
+//   let deleteItems = [];
+//   let formRules = [];
+//   // let blockUrls = ["goo"];
+//   let blockUrls = [];
+
+//   let dynBlockSite = _dynBlockSite;
+//   console.log("dynBlockSite", dynBlockSite);
+//   if (dynBlockSite.length > 0) {
+//     dynBlockSite.map((item) => (blockUrls = [...blockUrls, item.url]));
+//     // if (dynBlockSite.length) {
+//     console.log("URLS to block : ", blockUrls);
+//     getItm.map((itm) => {
+//       deleteItems = [...deleteItems, itm.id];
+//     });
+
+//     blockUrls.forEach((domain, index) => {
+//       let id = index + 1;
+//       formRules = [
+//         ...formRules,
+//         {
+//           id: id,
+//           priority: 1,
+//           action: { type: "block" },
+//           condition: { urlFilter: domain, resourceTypes: ["main_frame"] },
+//         },
+//       ];
+//     });
+
+//     updateDynamicRules(deleteItems, formRules);
+//     // chrome.declarativeNetRequest.getDynamicRules((a) =>console.log(a));
+//   } else {
+//     getItm.map((itm) => {
+//       deleteItems = [...deleteItems, itm.id];
+//     });
+
+//     blockUrls.forEach((domain, index) => {
+//       let id = index + 1;
+//       formRules = [
+//         ...formRules,
+//         {
+//           id: id,
+//           priority: 1,
+//           action: { type: "block" },
+//           condition: { urlFilter: domain, resourceTypes: ["main_frame"] },
+//         },
+//       ];
+//     });
+
+//     updateDynamicRules(deleteItems, formRules);
+//   }
+// }
