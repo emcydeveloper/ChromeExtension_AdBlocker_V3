@@ -12,38 +12,36 @@ let _appControl = true;
 let adBlockStateManage = {};
 let checkLocalStorage = localStorage.hasOwnProperty("_adBlockStateManage");
 
-
 /******************************************************/
 
-function init() {
-  var port = null;
-  document.getElementById("testing").addEventListener('click', function () {
-      filename = "hostapp/VRConsoleApp.exe";
-      var analyticsCount = document.getElementById("analytics").innerHTML;
-      var AdsCount = document.getElementById("ads").innerHTML;
-      var ECommerceCount = document.getElementById("e_commerce").innerHTML;
-      var OthersCount = document.getElementById("more").innerHTML;
-      //chrome.extension.connectNative("adhost");
-      chrome.runtime.sendNativeMessage('adhost', { "Analytics": 1, "Ads": 2, "ECommerce": 3, "Others": 4,"Name":"Chrome","status":"On" },
-          function (response) {
-            console.log(response);
-              if (typeof chrome.runtime.lastError === "undefined" || chrome.runtime.lastError.message.indexOf("not found") === -1) {
-                   success = true;
-                  //alert('Exe already running')
-              }
-          });
 
-  });
+document.getElementById("testing").addEventListener("click", function (test) {
+  chrome.runtime.sendNativeMessage(
+    "com.test.msgconsole",
+    {
+      Analytics: 1,
+      Ads: 2,
+      ECommerce: 3,
+      Others: 4,
+      Name: "Chrome",
+      status: "On",
+    },
+    getStatus
+  );
+});
+
+function getStatus() {
+  if (
+    typeof chrome.runtime.lastError === "undefined" ||
+    chrome.runtime.lastError.message.indexOf("not found") === -1
+  ) {
+    alert("data added");
+  } else {
+    console.log("Messaging - chrome.runtime.lastError ",chrome.runtime.lastError,"||",chrome.runtime.lastError.message);
+  }
 }
 
-document.addEventListener('DOMContentLoaded', init);
-
-
 /******************************************************/
-
-
-
-
 
 let autofillEnabled = new Promise((res, rej) => {
   chrome.privacy.services.autofillEnabled.get({}, function (details) {
@@ -69,22 +67,31 @@ let doNotTrackEnabled = new Promise((res, rej) => {
   });
 });
 
+autofillEnabled.then((output) => console.log("Auto fill enabled - ", output));
+passwordSavingEnabled.then((output) =>
+  console.log("Password saving enabled - ", output)
+);
+safeBrowsingEnabled.then((output) =>
+  console.log("Safe browsing enabled - ", output)
+);
+doNotTrackEnabled.then((output) =>
+  console.log("Do not track enabled - ", output)
+);
 
-autofillEnabled.then(output => console.log("Auto fill enabled - ", output))
-passwordSavingEnabled.then(output => console.log("Password saving enabled - ", output));
-safeBrowsingEnabled.then(output => console.log("Safe browsing enabled - ", output));
-doNotTrackEnabled.then(output => console.log("Do not track enabled - ",  output));
-
-Promise.all([autofillEnabled, passwordSavingEnabled, safeBrowsingEnabled,doNotTrackEnabled]).then((values) => {
-  console.log("Alllllllllllllllllll - ",values);
+Promise.all([
+  autofillEnabled,
+  passwordSavingEnabled,
+  safeBrowsingEnabled,
+  doNotTrackEnabled,
+]).then((values) => {
+  console.log("Alllllllllllllllllll - ", values);
 });
-
-
 
 window.onload = async function getCurrentTab() {
   let queryOptions = { active: true, lastFocusedWindow: true };
 
   let [tab] = await chrome.tabs.query(queryOptions);
+  
 
   chrome.storage.sync.get(
     "getMatchedRuleCounts",
@@ -212,14 +219,18 @@ function blockAllowHandler(getHandler, currentUrl) {
       ];
       btnAllowStatus.disabled = false;
       btnBlockStatus.disabled = true;
+      chrome.declarativeNetRequest.getDynamicRules(dynamicRulesHandler);
       break;
+
     case "allow":
       adBlockStateManage.dynBlockSite.map((item) =>
         item.url == currentUrl ? (item.type = false) : item
       );
       btnBlockStatus.disabled = false;
       btnAllowStatus.disabled = true;
+      chrome.declarativeNetRequest.getDynamicRules(dynamicRulesHandler);
       break;
+
     default:
       console.error("Error in switch case while handling block/allow");
   }
@@ -234,6 +245,69 @@ function blockAllowHandler(getHandler, currentUrl) {
   };
   setValueToStorage(adBlockStateManage);
 }
+
+function dynamicRulesHandler(getItm) {
+  let deleteItems = [];
+  let formRules = [];
+  // let blockUrls = ["goo"];
+  let blockUrls = [];
+
+  let dynBlockSite = adBlockStateManage.dynBlockSite;
+  console.log("dynBlockSite", dynBlockSite);
+  if (dynBlockSite.length > 0) {
+    dynBlockSite.map((item) => (blockUrls = [...blockUrls, item.url]));
+    // if (dynBlockSite.length) {
+    console.log("URLS to block : ", blockUrls);
+    getItm.map((itm) => {
+      deleteItems = [...deleteItems, itm.id];
+    });
+
+    blockUrls.forEach((domain, index) => {
+      let id = index + 1;
+      formRules = [
+        ...formRules,
+        {
+          id: id,
+          priority: 1,
+          action: { type: "block" },
+          condition: { urlFilter: domain, resourceTypes: ["main_frame"] },
+        },
+      ];
+    });
+
+    updateDynamicRules(deleteItems, formRules);
+    // chrome.declarativeNetRequest.getDynamicRules((a) =>console.log(a));
+  } else {
+    getItm.map((itm) => {
+      deleteItems = [...deleteItems, itm.id];
+    });
+
+    blockUrls.forEach((domain, index) => {
+      let id = index + 1;
+      formRules = [
+        ...formRules,
+        {
+          id: id,
+          priority: 1,
+          action: { type: "block" },
+          condition: { urlFilter: domain, resourceTypes: ["main_frame"] },
+        },
+      ];
+    });
+
+    updateDynamicRules(deleteItems, formRules);
+  }
+}
+
+function updateDynamicRules(deleteItems, formRules) {
+  console.log("deleteItems - ", deleteItems)
+  console.log("formRules - ", formRules)
+  chrome.declarativeNetRequest.updateDynamicRules({
+    removeRuleIds: deleteItems,
+    addRules: formRules,
+  });
+}
+
 
 function setValueToStorage(adBlockStateManage) {
   localStorage.setItem(

@@ -1,9 +1,0 @@
-{
-  "name": "adhost",
-  "description": "AD Blocker open external application",
-  "path": "C:\\Users\\samsanka\\Desktop\\SmartleapExtension\\SmartleapExtension\\hostapp\\vrconsoleapp.exe",
-  "type": "stdio",
-  "allowed_origins": [
-    "chrome-extension://bmjdkjgppepohmjjbogoecfkgmmggjjf/"
-  ]
-}

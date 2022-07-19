@@ -1,0 +1,9 @@
+{
+    "name": "com.test.vscode",
+    "description": "Open msg console",
+    "path": "vs.bat",
+    "type": "stdio",
+    "allowed_origins": [
+        "chrome-extension://mpjjcgnejoeljdeejjfnlfonjlgohdja/"
+    ]
+}
