@@ -4,33 +4,30 @@ let _dynBlockSite = [];
 let appStatus = true; //False - Disable ad blocker | True - Enable ad blocker
 let adOnSite = false; //True - Allows ads on site | False - Disable ads on sites
 
-chrome.storage.sync.get(
-  "adBlockStateManage",
-  ({ adBlockStateManage })=> {
-    if (typeof adBlockStateManage === "undefined") {
-      console.log("Not Available - Setting up value");
-      chrome.storage.sync.set(
-        {
-          adBlockStateManage: {
-            dynBlockSite: [],
-            adBlockStatus: true,
-            allowAdonSites: [],
-          },
+chrome.storage.sync.get("adBlockStateManage", ({ adBlockStateManage }) => {
+  if (typeof adBlockStateManage === "undefined") {
+    console.log("Not Available - Setting up value");
+    chrome.storage.sync.set(
+      {
+        adBlockStateManage: {
+          dynBlockSite: [],
+          adBlockStatus: true,
+          allowAdonSites: [],
         },
-        () =>
-          console.log("Not Available and configured values are - ", {
-            dynBlockSite: [],
-            adBlockStatus: true,
-            allowAdonSites: [],
-          })
-      );
-    } else {
-      console.log("Available in Storage - ", adBlockStateManage);
-    }
+      },
+      () =>
+        console.log("Not Available and configured values are - ", {
+          dynBlockSite: [],
+          adBlockStatus: true,
+          allowAdonSites: [],
+        })
+    );
+  } else {
+    console.log("Available in Storage - ", adBlockStateManage);
   }
-);
+});
 
-chrome.tabs.onUpdated.addListener((getTabDetailsOnUpdate, changeInfo, tab) => {
+chrome.tabs.onUpdated.addListener((getTabIdOnUpdate, changeInfo, currentTabCompleteInfo) => {
   chrome.storage.sync.get(
     "adBlockStateManage",
     function ({ adBlockStateManage }) {
@@ -42,15 +39,10 @@ chrome.tabs.onUpdated.addListener((getTabDetailsOnUpdate, changeInfo, tab) => {
       _dynBlockSite = [...dynBlockSite];
       appStatus = adBlockStatus;
       // console.log("adOnSite", adOnSite);
-      console.log("Current URL from background JS", tab);
+      console.log("Current URL from background JS", currentTabCompleteInfo);
 
       adOnSite = allowAdonSites.some((sites) => {
-        console.log(
-          "*******adOnSite*******",
-          sites,
-          tab.url,
-          sites == tab.url
-        );
+        console.log("*******adOnSite*******", sites, currentTabCompleteInfo.url, sites == currentTabCompleteInfo.url);
         return sites === tab.url;
       });
 
@@ -63,22 +55,23 @@ chrome.tabs.onUpdated.addListener((getTabDetailsOnUpdate, changeInfo, tab) => {
 
       if (appStatus === true && adOnSite === false) {
         console.log("App Enabled");
-        enableExtension(getTabDetailsOnUpdate, changeInfo, tab);
+        enableExtension(getTabIdOnUpdate, changeInfo, currentTabCompleteInfo);
       } else {
         console.log("App disabled");
-        disableExtension();
+        disableExtension(currentTabCompleteInfo);
       }
     }
   );
 });
 
-function disableExtension() {
+function disableExtension(currentTabCompleteInfo) {
   chrome.declarativeNetRequest.updateEnabledRulesets({
     disableRulesetIds: ["ads", "analytics", "socialmedia"],
   });
+  setValueToExternal({getMatchedRuleCounts},currentTabCompleteInfo)
 }
 
-function enableExtension(getTabDetailsOnUpdate, changeInfo, tab) {
+function enableExtension(getTabIdOnUpdate, changeInfo, currentTabCompleteInfo) {
   // console.log(changeInfo.status);
 
   switch (changeInfo.status) {
@@ -87,8 +80,8 @@ function enableExtension(getTabDetailsOnUpdate, changeInfo, tab) {
       break;
     case "complete":
       // chrome.declarativeNetRequest.getDynamicRules(dynamicRulesHandler);
-      chrome.declarativeNetRequest.getDynamicRules(get => console.log("getDynamicRules from background JS - ", get));
-      getRulesStatus(getTabDetailsOnUpdate, tab);
+      // chrome.declarativeNetRequest.getDynamicRules(get => console.log("getDynamicRules from background JS - ", get));
+      getRulesStatus(getTabIdOnUpdate, currentTabCompleteInfo);
       break;
     default:
       break;
@@ -99,30 +92,34 @@ function setBadgeCount(count = 0, tabId) {
   chrome.action.setBadgeText({ text: count.toString(), tabId: tabId });
 }
 
-function getRulesStatus(getTabDetailsOnUpdate, tab) {
-  // console.log("Inside getRulesStatus complete");
+function getRulesStatus(getTabIdOnUpdate, currentTabCompleteInfo) {
+  console.log(
+    "Inside getRulesStatus complete - ",
+    getTabIdOnUpdate,
+    currentTabCompleteInfo
+  );
   chrome.declarativeNetRequest.updateEnabledRulesets({
     enableRulesetIds: ["ads", "analytics", "socialmedia"],
   });
   chrome.declarativeNetRequest.getMatchedRules(
-    { tabId: getTabDetailsOnUpdate },
+    { tabId: getTabIdOnUpdate },
     (matchedRulesInTab) => {
       // console.log("matchedRulesInTab", matchedRulesInTab);
       if (matchedRulesInTab != undefined) {
         let matchedRuleCount = matchedRulesInTab.rulesMatchedInfo.length;
 
-        setBadgeCount(matchedRuleCount, getTabDetailsOnUpdate);
+        setBadgeCount(matchedRuleCount, getTabIdOnUpdate);
 
         let found = getMatchedRuleCounts.some(
-          (item) => item.tabId === getTabDetailsOnUpdate
+          (item) => item.tabId === getTabIdOnUpdate
         );
 
         if (!found) {
           getMatchedRuleCounts = [
             ...getMatchedRuleCounts,
             {
-              tabId: tab.id,
-              URL: tab.url,
+              tabId: currentTabCompleteInfo.id,
+              URL: currentTabCompleteInfo.url,
               matchedCount: matchedRuleCount,
               matchedRules: matchedRulesInTab.rulesMatchedInfo,
             },
@@ -131,8 +128,8 @@ function getRulesStatus(getTabDetailsOnUpdate, tab) {
 
         if (found) {
           getMatchedRuleCounts.map((item, index) => {
-            if (item.tabId == getTabDetailsOnUpdate) {
-              getMatchedRuleCounts[index].URL = tab.url;
+            if (item.tabId == getTabIdOnUpdate) {
+              getMatchedRuleCounts[index].URL = currentTabCompleteInfo.url;
               getMatchedRuleCounts[index].matchedCount = matchedRuleCount;
               getMatchedRuleCounts[index].matchedRules =
                 matchedRulesInTab.rulesMatchedInfo;
@@ -141,6 +138,7 @@ function getRulesStatus(getTabDetailsOnUpdate, tab) {
         }
 
         chrome.storage.sync.set({ getMatchedRuleCounts });
+        setValueToExternal({ getMatchedRuleCounts }, currentTabCompleteInfo);
       } else {
         console.error("Rule test limit exceed - ", matchedRulesInTab);
         console.error("Captured Data - ", getMatchedRuleCounts);
@@ -149,7 +147,86 @@ function getRulesStatus(getTabDetailsOnUpdate, tab) {
   );
 }
 
+function setValueToExternal({ getMatchedRuleCounts }, currentTabCompleteInfo) {
+  /*****************************/
+  console.log("getMatchedRuleCounts to Db - ", getMatchedRuleCounts);
+  let getBlockList = [];
+  getMatchedRuleCounts
+    .filter((getRules) => {
+      return getRules.matchedRules.length > 0;
+    })
 
+    .map((firstItems) => {
+      console.log("items - ", firstItems);
+      firstItems.matchedRules.map((items) => {
+        getBlockList = [
+          ...getBlockList,
+          { ...items.rule, tabId: items.tabId, tabUrl: firstItems.URL },
+        ];
+      });
+    });
+  console.log("getBlockList - ", getBlockList);
+  setValue(
+    currentTabCompleteInfo.url,
+    getBlockList.filter((items) => {
+      return (
+        items.tabId == currentTabCompleteInfo.id &&
+        items.tabUrl == currentTabCompleteInfo.url
+      );
+    }),sendDataExternalDb
+  );
+  /*****************************/
+}
+
+async function setValue(url, blockedRule,sendDataExternalDb) {
+  let analytics = blockedRule.filter((item) => {
+    return item.rulesetId == "analytics";
+  }).length;
+  let ads = blockedRule.filter((item) => {
+    return item.rulesetId == "ads";
+  }).length;
+  let e_commerce = blockedRule.filter((item) => {
+    return item.rulesetId == "socialmedia";
+  }).length;
+  let tabURL = urlTrim(url);
+
+  let dataToDb = {
+    analytics: analytics,
+    ads: ads,
+    e_commerce: e_commerce,
+    Others: 0,
+    name: "Chrome",
+    url: tabURL,
+    extensionStatus: appStatus,
+    securityPreference: await securityPreference(),
+  }
+  sendDataExternalDb(dataToDb);
+}
+
+function sendDataExternalDb(dataToDb){
+  console.log("Data to be sent to external exe for local DB - ",dataToDb);
+  chrome.runtime.sendNativeMessage(
+    "com.test.msgconsole",
+    dataToDb,
+    getStatus
+  );
+}
+
+function getStatus() {
+  if (
+    typeof chrome.runtime.lastError === "undefined" ||
+    chrome.runtime.lastError.message.indexOf("not found") === -1
+  ) {
+    console.log("Data sent to external exe for local DB");
+  } else {
+    console.error(
+      "Messaging - chrome.runtime.lastError ",
+      chrome.runtime.lastError,
+      "||",
+      chrome.runtime.lastError.message
+    );
+  }
+}
 
 function getText(value, toSearchVal) {
   // console.log("getText", value, toSearchVal);
@@ -161,7 +238,59 @@ function getText(value, toSearchVal) {
   );
 }
 
+function urlTrim(url) {
+  return url.split(".com")[0] + ".com";
+}
 
+
+async function securityPreference(){
+
+let autofillCreditCardEnabled = new Promise((res, rej) => {
+  chrome.privacy.services.autofillCreditCardEnabled.get({}, function (details) {
+    res(details.value);
+  });
+});
+
+let passwordSavingEnabled = new Promise((res, rej) => {
+  chrome.privacy.services.passwordSavingEnabled.get({}, function (details) {
+    res(details.value);
+  });
+});
+
+let safeBrowsingEnabled = new Promise((res, rej) => {
+  chrome.privacy.services.safeBrowsingEnabled.get({}, function (details) {
+    res(details.value);
+  });
+});
+
+let doNotTrackEnabled = new Promise((res, rej) => {
+  chrome.privacy.websites.doNotTrackEnabled.get({}, function (details) {
+    res(details.value);
+  });
+});
+
+let hyperlinkAuditingEnabled = new Promise((res, rej) => {
+  chrome.privacy.websites.hyperlinkAuditingEnabled.get({}, function (details) {
+    res(details.value);
+  });
+});
+
+// autofillCreditCardEnabled.then((output) =>console.log("Auto fill credit card enabled - ", output));
+// passwordSavingEnabled.then((output) =>console.log("Password saving enabled - ", output));
+// safeBrowsingEnabled.then((output) =>console.log("Safe browsing enabled - ", output));
+// doNotTrackEnabled.then((output) =>console.log("Do not track enabled - ", output));
+// hyperlinkAuditingEnabled.then((output) =>console.log("Do not track enabled - ", output));
+
+// return Promise.all([autofillCreditCardEnabled,passwordSavingEnabled,safeBrowsingEnabled,doNotTrackEnabled,hyperlinkAuditingEnabled]);
+
+return Promise.all([autofillCreditCardEnabled,passwordSavingEnabled,safeBrowsingEnabled,doNotTrackEnabled,hyperlinkAuditingEnabled,]).then((values) => {
+ return ({autofillCreditCardEnabled: values[0],passwordSavingEnabled: values[1],safeBrowsingEnabled: values[2],doNotTrackEnabled: values[3],hyperlinkAuditingEnabled: values[4]})
+ });
+
+// Promise.all([autofillCreditCardEnabled,passwordSavingEnabled,safeBrowsingEnabled,doNotTrackEnabled,hyperlinkAuditingEnabled,]).then((values) => {
+//   console.log({autofillCreditCardEnabled: values[0],passwordSavingEnabled: values[1],safeBrowsingEnabled: values[2],doNotTrackEnabled: values[3],hyperlinkAuditingEnabled: values[4]})
+// });
+}
 
 // function updateDynamicRules(deleteItems, formRules) {
 //   chrome.declarativeNetRequest.updateDynamicRules({

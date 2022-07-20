@@ -12,86 +12,11 @@ let _appControl = true;
 let adBlockStateManage = {};
 let checkLocalStorage = localStorage.hasOwnProperty("_adBlockStateManage");
 
-/******************************************************/
-
-
-document.getElementById("testing").addEventListener("click", function (test) {
-  chrome.runtime.sendNativeMessage(
-    "com.test.msgconsole",
-    {
-      Analytics: 1,
-      Ads: 2,
-      ECommerce: 3,
-      Others: 4,
-      Name: "Chrome",
-      status: "On",
-    },
-    getStatus
-  );
-});
-
-function getStatus() {
-  if (
-    typeof chrome.runtime.lastError === "undefined" ||
-    chrome.runtime.lastError.message.indexOf("not found") === -1
-  ) {
-    alert("data added");
-  } else {
-    console.log("Messaging - chrome.runtime.lastError ",chrome.runtime.lastError,"||",chrome.runtime.lastError.message);
-  }
-}
-
-/******************************************************/
-
-let autofillEnabled = new Promise((res, rej) => {
-  chrome.privacy.services.autofillEnabled.get({}, function (details) {
-    res(details.value);
-  });
-});
-
-let passwordSavingEnabled = new Promise((res, rej) => {
-  chrome.privacy.services.passwordSavingEnabled.get({}, function (details) {
-    res(details.value);
-  });
-});
-
-let safeBrowsingEnabled = new Promise((res, rej) => {
-  chrome.privacy.services.safeBrowsingEnabled.get({}, function (details) {
-    res(details.value);
-  });
-});
-
-let doNotTrackEnabled = new Promise((res, rej) => {
-  chrome.privacy.websites.doNotTrackEnabled.get({}, function (details) {
-    res(details.value);
-  });
-});
-
-autofillEnabled.then((output) => console.log("Auto fill enabled - ", output));
-passwordSavingEnabled.then((output) =>
-  console.log("Password saving enabled - ", output)
-);
-safeBrowsingEnabled.then((output) =>
-  console.log("Safe browsing enabled - ", output)
-);
-doNotTrackEnabled.then((output) =>
-  console.log("Do not track enabled - ", output)
-);
-
-Promise.all([
-  autofillEnabled,
-  passwordSavingEnabled,
-  safeBrowsingEnabled,
-  doNotTrackEnabled,
-]).then((values) => {
-  console.log("Alllllllllllllllllll - ", values);
-});
 
 window.onload = async function getCurrentTab() {
   let queryOptions = { active: true, lastFocusedWindow: true };
 
   let [tab] = await chrome.tabs.query(queryOptions);
-  
 
   chrome.storage.sync.get(
     "getMatchedRuleCounts",
@@ -101,15 +26,15 @@ window.onload = async function getCurrentTab() {
         .filter((getRules) => {
           return getRules.matchedRules.length > 0;
         })
-        .map((items) => {
-          items.matchedRules.map((items) => {
+        .map((firstItems) => {
+          firstItems.matchedRules.map((items) => {
             getBlockList = [
               ...getBlockList,
-              { ...items.rule, tabId: items.tabId, tabUrl: items.URL },
+              { ...items.rule, tabId: items.tabId, tabUrl: firstItems.URL },
             ];
           });
         });
-
+      console.log("getBlockList - ", getBlockList);
       setValue(
         tab.url,
         getBlockList.filter((items) => {
@@ -131,7 +56,11 @@ function setValue(url, blockedRule) {
   e_commerce.innerHTML = blockedRule.filter((item) => {
     return item.rulesetId == "socialmedia";
   }).length;
-  tabURL.innerText = url.split(".com")[0] + ".com";
+  tabURL.innerText = urlTrim(url);
+}
+
+function urlTrim(url) {
+  return url.split(".com")[0] + ".com";
 }
 
 function getSetLocalStorage(currentUrl) {
@@ -300,14 +229,13 @@ function dynamicRulesHandler(getItm) {
 }
 
 function updateDynamicRules(deleteItems, formRules) {
-  console.log("deleteItems - ", deleteItems)
-  console.log("formRules - ", formRules)
+  console.log("deleteItems - ", deleteItems);
+  console.log("formRules - ", formRules);
   chrome.declarativeNetRequest.updateDynamicRules({
     removeRuleIds: deleteItems,
     addRules: formRules,
   });
 }
-
 
 function setValueToStorage(adBlockStateManage) {
   localStorage.setItem(
