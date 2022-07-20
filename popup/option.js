@@ -3,7 +3,7 @@ let chkAppControl = document.getElementById("app-control");
 let divUiControl = document.getElementById("container");
 let txtToBlock = document.getElementById("txt-site-to-block");
 var radioContainer = document.getElementById("div-radio");
-let btnUserInputBlock = document.getElementById("btn-site-to-block");
+// let btnUserInputBlock = document.getElementById("btn-site-to-block");
 let btnDynamicUserInput = document.getElementById("dynamic-block-allow");
 
 document.getElementById("blocksite-table").style.display = "block";
@@ -11,11 +11,10 @@ document.getElementById("allow-ad-site-table").style.display = "none";
 
 btnDynamicUserInput.value = "Sitesblocked";
 btnDynamicUserInput.innerText = "Block";
-btnUserInputBlock.disabled = true;
+// btnUserInputBlock.disabled = true;
 btnDynamicUserInput.disabled = true;
 
-// let _dynBlockSite = [];
-// let _allowAdonSites = ["dinamalar", "google", "ganesh"];
+
 let _appControl = true;
 let adBlockStateManage = {};
 let checkLocalStorage = localStorage.hasOwnProperty("_adBlockStateManage");
@@ -64,7 +63,7 @@ function getSetLocalStorage(currentUrl) {
       adBlockStatus: adBlockStatus,
       allowAdonSites: allowAdonSites,
     };
-    // _dynBlockSite = dynBlockSite;
+
     _appControl = adBlockStatus;
     chkAppControl.checked = _appControl;
 
@@ -80,7 +79,6 @@ function getSetLocalStorage(currentUrl) {
 
     chkAppControl.checked = _appControl;
 
-    // console.log("before syn store in else", adBlockStateManage);
     setValueToStorage(adBlockStateManage);
     tableDisplayBlockedSites(adBlockStateManage.dynBlockSite);
     tableAdAllowedSites(adBlockStateManage.allowAdonSites);
@@ -99,8 +97,9 @@ function getSetLocalStorage(currentUrl) {
   });
 
   txtToBlock.addEventListener("keydown", (getEvent) => {
+    console.log("txtToBlock.addEventListener",getEvent)
     if (getEvent.target.value.length > 3) {
-      btnUserInputBlock.disabled = false;
+      // btnUserInputBlock.disabled = false;
       btnDynamicUserInput.disabled = false;
       let results = adBlockStateManage.dynBlockSite.filter((getItem) =>
         getText(getItem.url, getEvent.target.value)
@@ -109,22 +108,22 @@ function getSetLocalStorage(currentUrl) {
         ? tableDisplayBlockedSites(results)
         : tableDisplayBlockedSites(adBlockStateManage.dynBlockSite);
     } else {
-      btnUserInputBlock.disabled = true;
+      // btnUserInputBlock.disabled = true;
       btnDynamicUserInput.disabled = true;
       tableDisplayBlockedSites(adBlockStateManage.dynBlockSite);
     }
   });
 
-  btnUserInputBlock.addEventListener("click", () => {
-    userUrlToBlock = txtToBlock.value;
-    if (
-      adBlockStateManage.dynBlockSite.some((item) => item.url == userUrlToBlock)
-    ) {
-      txtToBlock.value = "";
-    } else {
-      blockAllowHandler("block", userUrlToBlock);
-    }
-  });
+  // btnUserInputBlock.addEventListener("click", () => {
+  //   userUrlToBlock = txtToBlock.value;
+  //   if (
+  //     adBlockStateManage.dynBlockSite.some((item) => item.url == userUrlToBlock)
+  //   ) {
+  //     txtToBlock.value = "";
+  //   } else {
+  //     blockAllowHandler("block", userUrlToBlock);
+  //   }
+  // });
 
   btnDynamicUserInput.addEventListener("click", () => {
     userUrlToBlock = txtToBlock.value;
@@ -322,7 +321,7 @@ function tableDisplayBlockedSites(blockedSites) {
   // thead.appendChild(row_1);
 
   // Creating and adding data to second row of the table
-  getBlockedSites.map((item, index) => {
+  getBlockedSites.map((getUrl, index) => {
     let row = document.createElement("tr");
     row.setAttribute("id", "tableDisplayBlockedSites" + index);
 
@@ -331,12 +330,12 @@ function tableDisplayBlockedSites(blockedSites) {
     // data_1.setAttribute("class", "blocksite-row-data");
 
     let data_2 = document.createElement("td");
-    data_2.innerHTML = item;
+    data_2.innerHTML = getUrl;
     data_2.setAttribute("class", "blocksite-row-data");
 
     let data_3 = document.createElement("td");
     // data_3.innerHTML = `<button id=tableDisplayBlockedSites-${item} class="btn-delete-site">Delete</button>`;
-    data_3.innerHTML = `<i  id=tableDisplayBlockedSites-${item} class="btn-delete-site fa fa-trash-o"></i>`;
+    data_3.innerHTML = `<i  id=tableDisplayBlockedSites-${getUrl} class="btn-delete-site fa fa-trash-o"></i>`;
 
     // row.appendChild(data_1);
     row.appendChild(data_2);
@@ -392,7 +391,7 @@ function tableAdAllowedSites(blockedSites) {
   // thead.appendChild(row_1);
 
   // Creating and adding data to second row of the table
-  blockedSites.map((item, index) => {
+  blockedSites.map((getUrl, index) => {
     let row = document.createElement("tr");
     row.setAttribute("id", "AdAllowedSites" + index);
 
@@ -401,12 +400,12 @@ function tableAdAllowedSites(blockedSites) {
     // data_1.setAttribute("class", "row-data");
 
     let data_2 = document.createElement("td");
-    data_2.innerHTML = item;
+    data_2.innerHTML = getUrl;
     data_2.setAttribute("class", "row-data");
 
     let data_3 = document.createElement("td");
     // data_3.innerHTML = `<button id=tableAdAllowedSites-${item} class="delete-site">Delete</button>`;
-    data_3.innerHTML = `<i  id=tableAdAllowedSites-${item} class="delete-site fa fa-trash-o"></i>`;
+    data_3.innerHTML = `<i  id=tableAdAllowedSites-${getUrl} class="delete-site fa fa-trash-o"></i>`;
 
     // row.appendChild(data_1);
     row.appendChild(data_2);
@@ -449,4 +448,8 @@ function getText(value, toSearchVal) {
       .toString()
       .indexOf(toSearchVal.toLowerCase().toString()) >= 0
   );
+}
+
+function urlTrim(url) {
+  return url.split(".com")[0] + ".com";
 }
