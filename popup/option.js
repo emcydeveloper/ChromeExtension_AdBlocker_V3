@@ -6,6 +6,16 @@ var radioContainer = document.getElementById("div-radio");
 // let btnUserInputBlock = document.getElementById("btn-site-to-block");
 let btnDynamicUserInput = document.getElementById("dynamic-block-allow");
 
+const dContainer = document.querySelector('#TabsSystem')
+
+dContainer
+    .querySelectorAll('.TabButton')
+    .forEach(tab =>
+        tab.onclick = _ => {
+            dContainer.dataset.tab = tab.dataset.tab
+        }
+    )
+
 document.getElementById("blocksite-table").style.display = "block";
 document.getElementById("allow-ad-site-table").style.display = "none";
 

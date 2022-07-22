@@ -178,6 +178,55 @@ function setValueToExternal({ getMatchedRuleCounts }, currentTabCompleteInfo) {
   /*****************************/
 }
 
+async function securityPreference(){
+
+  let autofillCreditCardEnabled = new Promise((res, rej) => {
+    chrome.privacy.services.autofillCreditCardEnabled.get({}, function (details) {
+      res(details.value);
+    });
+  });
+  
+  let passwordSavingEnabled = new Promise((res, rej) => {
+    chrome.privacy.services.passwordSavingEnabled.get({}, function (details) {
+      res(details.value);
+    });
+  });
+  
+  let safeBrowsingEnabled = new Promise((res, rej) => {
+    chrome.privacy.services.safeBrowsingEnabled.get({}, function (details) {
+      res(details.value);
+    });
+  });
+  
+  let doNotTrackEnabled = new Promise((res, rej) => {
+    chrome.privacy.websites.doNotTrackEnabled.get({}, function (details) {
+      res(details.value);
+    });
+  });
+  
+  let hyperlinkAuditingEnabled = new Promise((res, rej) => {
+    chrome.privacy.websites.hyperlinkAuditingEnabled.get({}, function (details) {
+      res(details.value);
+    });
+  });
+  
+  // autofillCreditCardEnabled.then((output) =>console.log("Auto fill credit card enabled - ", output));
+  // passwordSavingEnabled.then((output) =>console.log("Password saving enabled - ", output));
+  // safeBrowsingEnabled.then((output) =>console.log("Safe browsing enabled - ", output));
+  // doNotTrackEnabled.then((output) =>console.log("Do not track enabled - ", output));
+  // hyperlinkAuditingEnabled.then((output) =>console.log("Do not track enabled - ", output));
+  
+  // return Promise.all([autofillCreditCardEnabled,passwordSavingEnabled,safeBrowsingEnabled,doNotTrackEnabled,hyperlinkAuditingEnabled]);
+  
+  return Promise.all([autofillCreditCardEnabled,passwordSavingEnabled,safeBrowsingEnabled,doNotTrackEnabled,hyperlinkAuditingEnabled,]).then((values) => {
+   return ({autofillCreditCardEnabled: values[0],passwordSavingEnabled: values[1],safeBrowsingEnabled: values[2],doNotTrackEnabled: values[3],hyperlinkAuditingEnabled: values[4]})
+   });
+  
+  // Promise.all([autofillCreditCardEnabled,passwordSavingEnabled,safeBrowsingEnabled,doNotTrackEnabled,hyperlinkAuditingEnabled,]).then((values) => {
+  //   console.log({autofillCreditCardEnabled: values[0],passwordSavingEnabled: values[1],safeBrowsingEnabled: values[2],doNotTrackEnabled: values[3],hyperlinkAuditingEnabled: values[4]})
+  // });
+  }
+
 async function setValue(url, blockedRule,sendDataExternalDb) {
   let analytics = blockedRule.filter((item) => {
     return item.rulesetId == "analytics";
@@ -190,15 +239,18 @@ async function setValue(url, blockedRule,sendDataExternalDb) {
   }).length;
   let tabURL = urlTrim(url);
 
+  let preference = await securityPreference()
+
   let dataToDb = {
-    analytics: analytics,
-    ads: ads,
-    e_commerce: e_commerce,
+    Analytics: analytics,
+    Ads: ads,
+    ECommerce: e_commerce,
     Others: 0,
-    name: "Chrome",
+    Name: "Chrome",
     url: tabURL,
     extensionStatus: appStatus,
-    securityPreference: await securityPreference(),
+    // securityPreference: await securityPreference(),
+    ...preference
   }
   sendDataExternalDb(dataToDb);
 }
@@ -243,54 +295,7 @@ function urlTrim(url) {
 }
 
 
-async function securityPreference(){
 
-let autofillCreditCardEnabled = new Promise((res, rej) => {
-  chrome.privacy.services.autofillCreditCardEnabled.get({}, function (details) {
-    res(details.value);
-  });
-});
-
-let passwordSavingEnabled = new Promise((res, rej) => {
-  chrome.privacy.services.passwordSavingEnabled.get({}, function (details) {
-    res(details.value);
-  });
-});
-
-let safeBrowsingEnabled = new Promise((res, rej) => {
-  chrome.privacy.services.safeBrowsingEnabled.get({}, function (details) {
-    res(details.value);
-  });
-});
-
-let doNotTrackEnabled = new Promise((res, rej) => {
-  chrome.privacy.websites.doNotTrackEnabled.get({}, function (details) {
-    res(details.value);
-  });
-});
-
-let hyperlinkAuditingEnabled = new Promise((res, rej) => {
-  chrome.privacy.websites.hyperlinkAuditingEnabled.get({}, function (details) {
-    res(details.value);
-  });
-});
-
-// autofillCreditCardEnabled.then((output) =>console.log("Auto fill credit card enabled - ", output));
-// passwordSavingEnabled.then((output) =>console.log("Password saving enabled - ", output));
-// safeBrowsingEnabled.then((output) =>console.log("Safe browsing enabled - ", output));
-// doNotTrackEnabled.then((output) =>console.log("Do not track enabled - ", output));
-// hyperlinkAuditingEnabled.then((output) =>console.log("Do not track enabled - ", output));
-
-// return Promise.all([autofillCreditCardEnabled,passwordSavingEnabled,safeBrowsingEnabled,doNotTrackEnabled,hyperlinkAuditingEnabled]);
-
-return Promise.all([autofillCreditCardEnabled,passwordSavingEnabled,safeBrowsingEnabled,doNotTrackEnabled,hyperlinkAuditingEnabled,]).then((values) => {
- return ({autofillCreditCardEnabled: values[0],passwordSavingEnabled: values[1],safeBrowsingEnabled: values[2],doNotTrackEnabled: values[3],hyperlinkAuditingEnabled: values[4]})
- });
-
-// Promise.all([autofillCreditCardEnabled,passwordSavingEnabled,safeBrowsingEnabled,doNotTrackEnabled,hyperlinkAuditingEnabled,]).then((values) => {
-//   console.log({autofillCreditCardEnabled: values[0],passwordSavingEnabled: values[1],safeBrowsingEnabled: values[2],doNotTrackEnabled: values[3],hyperlinkAuditingEnabled: values[4]})
-// });
-}
 
 // function updateDynamicRules(deleteItems, formRules) {
 //   chrome.declarativeNetRequest.updateDynamicRules({

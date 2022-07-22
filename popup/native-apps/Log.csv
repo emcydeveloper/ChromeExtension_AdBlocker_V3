@@ -8,3 +8,19 @@
 20-Jul-22 21:59:39,8888,10010: Access violation at address 00926EDE in module 'MsgConsole.exe'. Read of address 00000000
 20-Jul-22 21:59:46,15688,Local db updated
 20-Jul-22 21:59:46,15688,10010: Access violation at address 00926EDE in module 'MsgConsole.exe'. Read of address 00000000
+22-Jul-22 18:46:39,2952,Local db updated
+22-Jul-22 18:46:39,2952,10010: Access violation at address 00926EDE in module 'MsgConsole.exe'. Read of address 00000000
+22-Jul-22 18:47:10,824,Local db updated
+22-Jul-22 18:47:10,824,10010: Access violation at address 00926EDE in module 'MsgConsole.exe'. Read of address 00000000
+22-Jul-22 18:47:18,10036,Local db updated
+22-Jul-22 18:47:18,10036,10010: Access violation at address 00926EDE in module 'MsgConsole.exe'. Read of address 00000000
+22-Jul-22 18:57:57,11108,Local db updated
+22-Jul-22 18:57:57,11108,10010: Access violation at address 00926FD3 in module 'MsgConsole.exe'. Read of address 00000000
+22-Jul-22 18:59:06,9908,Local db updated
+22-Jul-22 18:59:06,9908,10010: Access violation at address 00926FD3 in module 'MsgConsole.exe'. Read of address 00000000
+22-Jul-22 18:59:09,7016,Local db updated
+22-Jul-22 18:59:09,7016,10010: Access violation at address 00926FD3 in module 'MsgConsole.exe'. Read of address 00000000
+22-Jul-22 18:59:45,8472,Local db updated
+22-Jul-22 18:59:45,8472,10010: Access violation at address 00926FD3 in module 'MsgConsole.exe'. Read of address 00000000
+22-Jul-22 18:59:51,8788,Local db updated
+22-Jul-22 18:59:51,8788,10010: Access violation at address 00926FD3 in module 'MsgConsole.exe'. Read of address 00000000
