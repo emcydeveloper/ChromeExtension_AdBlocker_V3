@@ -11,7 +11,7 @@
     },
     "permissions": ["nativeMessaging","storage","tabs", "privacy","declarativeNetRequest","declarativeNetRequestFeedback"],
     "action": {
-      "default_popup": "popup/popup.html"
+      "default_popup": "UIFiles/HTML/popup.html"
     },
     "declarative_net_request": {
       "rule_resources": [

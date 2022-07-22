@@ -1,7 +1,7 @@
 {
     "name": "com.test.msgconsole",
     "description": "Open msg console",
-    "path": "D:\\Projects\\AdBlocker\\AddBlocker_V3\\popup\\native-apps\\MsgConsole.exe",
+    "path": "MsgConsole.exe",
     "type": "stdio",
     "allowed_origins": [
         "chrome-extension://mpjjcgnejoeljdeejjfnlfonjlgohdja/"

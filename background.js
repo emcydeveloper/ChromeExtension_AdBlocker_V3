@@ -167,7 +167,7 @@ function setValueToExternal({ getMatchedRuleCounts }, currentTabCompleteInfo) {
     });
   console.log("getBlockList - ", getBlockList);
   setValue(
-    currentTabCompleteInfo.url,
+    currentTabCompleteInfo,
     getBlockList.filter((items) => {
       return (
         items.tabId == currentTabCompleteInfo.id &&
@@ -227,7 +227,7 @@ async function securityPreference(){
   // });
   }
 
-async function setValue(url, blockedRule,sendDataExternalDb) {
+async function setValue(currentTabCompleteInfo, blockedRule,sendDataExternalDb) {
   let analytics = blockedRule.filter((item) => {
     return item.rulesetId == "analytics";
   }).length;
@@ -237,7 +237,7 @@ async function setValue(url, blockedRule,sendDataExternalDb) {
   let e_commerce = blockedRule.filter((item) => {
     return item.rulesetId == "socialmedia";
   }).length;
-  let tabURL = urlTrim(url);
+  let tabURL = urlTrim(currentTabCompleteInfo.url);
 
   let preference = await securityPreference()
 
@@ -248,6 +248,7 @@ async function setValue(url, blockedRule,sendDataExternalDb) {
     Others: 0,
     Name: "Chrome",
     url: tabURL,
+    tabID:currentTabCompleteInfo.id,
     extensionStatus: appStatus,
     // securityPreference: await securityPreference(),
     ...preference
