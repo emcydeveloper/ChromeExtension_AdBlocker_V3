@@ -6,15 +6,14 @@ var radioContainer = document.getElementById("div-radio");
 // let btnUserInputBlock = document.getElementById("btn-site-to-block");
 let btnDynamicUserInput = document.getElementById("dynamic-block-allow");
 
-const dContainer = document.querySelector('#TabsSystem')
+const dContainer = document.querySelector("#TabsSystem");
 
-dContainer
-    .querySelectorAll('.TabButton')
-    .forEach(tab =>
-        tab.onclick = _ => {
-            dContainer.dataset.tab = tab.dataset.tab
-        }
-    )
+dContainer.querySelectorAll(".TabButton").forEach(
+  (tab) =>
+    (tab.onclick = (_) => {
+      dContainer.dataset.tab = tab.dataset.tab;
+    })
+);
 
 document.getElementById("blocksite-table").style.display = "block";
 document.getElementById("allow-ad-site-table").style.display = "none";
@@ -24,12 +23,12 @@ btnDynamicUserInput.innerText = "Block";
 // btnUserInputBlock.disabled = true;
 btnDynamicUserInput.disabled = true;
 
-
 let _appControl = true;
 let adBlockStateManage = {};
 let checkLocalStorage = localStorage.hasOwnProperty("_adBlockStateManage");
 
 window.onload = async function getCurrentTab() {
+  console.log("window.onload")
   let queryOptions = { active: true, lastFocusedWindow: true };
 
   let [tab] = await chrome.tabs.query(queryOptions);
@@ -55,7 +54,6 @@ window.onload = async function getCurrentTab() {
 };
 
 function getSetLocalStorage(currentUrl) {
-  console.log("From UI - Current URL", currentUrl);
 
   if (checkLocalStorage === true) {
     let { dynBlockSite, adBlockStatus, allowAdonSites } = JSON.parse(
@@ -106,8 +104,8 @@ function getSetLocalStorage(currentUrl) {
     setValueToStorage(adBlockStateManage);
   });
 
-  txtToBlock.addEventListener("keydown", (getEvent) => {
-    console.log("txtToBlock.addEventListener",getEvent)
+  txtToBlock.addEventListener("keyup", (getEvent) => {
+    // console.log("txtToBlock.addEventListener",getEvent)
     if (getEvent.target.value.length > 3) {
       // btnUserInputBlock.disabled = false;
       btnDynamicUserInput.disabled = false;
@@ -124,20 +122,10 @@ function getSetLocalStorage(currentUrl) {
     }
   });
 
-  // btnUserInputBlock.addEventListener("click", () => {
-  //   userUrlToBlock = txtToBlock.value;
-  //   if (
-  //     adBlockStateManage.dynBlockSite.some((item) => item.url == userUrlToBlock)
-  //   ) {
-  //     txtToBlock.value = "";
-  //   } else {
-  //     blockAllowHandler("block", userUrlToBlock);
-  //   }
-  // });
-
   btnDynamicUserInput.addEventListener("click", () => {
     userUrlToBlock = txtToBlock.value;
     if (btnDynamicUserInput.value == "Sitesblocked") {
+      // console.log("Block Webstie",   adBlockStateManage.dynBlockSite.some((item) => item.url == userUrlToBlock))
       if (
         adBlockStateManage.dynBlockSite.some(
           (item) => item.url == userUrlToBlock
@@ -145,6 +133,7 @@ function getSetLocalStorage(currentUrl) {
       ) {
         txtToBlock.value = "";
         alert("Alerady Blcoked");
+        tableDisplayBlockedSites(adBlockStateManage.dynBlockSite);
       } else {
         blockAllowHandler("block", userUrlToBlock);
       }
@@ -155,6 +144,7 @@ function getSetLocalStorage(currentUrl) {
       ) {
         txtToBlock.value = "";
         alert("Alerady Blcoked");
+        tableAdAllowedSites(adBlockStateManage.allowAdonSites);
       } else {
         adBlockStateManage.allowAdonSites = [
           ...adBlockStateManage.allowAdonSites,
@@ -164,11 +154,15 @@ function getSetLocalStorage(currentUrl) {
         setValueToStorage(adBlockStateManage);
       }
     }
+    txtToBlock.value = "";
+    btnDynamicUserInput.disabled = true;
   });
 
   // Sitesblocked
   // AllowAdOnSites
   radioContainer.onchange = function (e) {
+    txtToBlock.value = "";
+    btnDynamicUserInput.disabled = true;
     switch (e.target.value) {
       case "Sitesblocked":
         document.getElementById("blocksite-table").style.display = "block";
@@ -184,12 +178,10 @@ function getSetLocalStorage(currentUrl) {
         btnDynamicUserInput.value = "AllowAdOnSites";
         btnDynamicUserInput.innerText = "Allow";
         tableAdAllowedSites(adBlockStateManage.allowAdonSites);
-        //tableAdAllowedSites
-
         break;
 
       default:
-        console.error("Error in radio");
+        console.error("Error in radio button");
     }
   };
 }
@@ -229,8 +221,8 @@ function blockAllowHandler(getHandler, currentUrl) {
 }
 
 function updateDynamicRules(deleteItems, formRules) {
-  console.log("deleteItems - ", deleteItems)
-  console.log("formRules - ", formRules)
+  console.log("deleteItems - ", deleteItems);
+  console.log("formRules - ", formRules);
   chrome.declarativeNetRequest.updateDynamicRules({
     removeRuleIds: deleteItems,
     addRules: formRules,
