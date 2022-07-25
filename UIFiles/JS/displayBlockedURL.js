@@ -1,9 +1,9 @@
 let getRules = [];
 
 async function fetchRules() {
-  let fetchAnalyticsRules = await fetch("../analytics.json");
-  let fetchAdsRules = await fetch("../ads.json");
-  let fetchSocialMediaRules = await fetch("../socialmedia.json");
+  let fetchAnalyticsRules = await fetch(".../analytics.json");
+  let fetchAdsRules = await fetch(".../ads.json");
+  let fetchSocialMediaRules = await fetch("./ .../socialmedia.json");
 
   let analyticsRules = await fetchAnalyticsRules.json();
   let adsRules = await fetchAdsRules.json();
