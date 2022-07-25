@@ -28,7 +28,7 @@ let adBlockStateManage = {};
 let checkLocalStorage = localStorage.hasOwnProperty("_adBlockStateManage");
 
 window.onload = async function getCurrentTab() {
-  console.log("window.onload")
+  // console.log("window.onload")
   let queryOptions = { active: true, lastFocusedWindow: true };
 
   let [tab] = await chrome.tabs.query(queryOptions);
@@ -54,7 +54,6 @@ window.onload = async function getCurrentTab() {
 };
 
 function getSetLocalStorage(currentUrl) {
-
   if (checkLocalStorage === true) {
     let { dynBlockSite, adBlockStatus, allowAdonSites } = JSON.parse(
       localStorage.getItem("_adBlockStateManage")
@@ -124,6 +123,8 @@ function getSetLocalStorage(currentUrl) {
 
   btnDynamicUserInput.addEventListener("click", () => {
     userUrlToBlock = txtToBlock.value;
+    txtToBlock.value = "";
+    btnDynamicUserInput.disabled = true;
     if (btnDynamicUserInput.value == "Sitesblocked") {
       // console.log("Block Webstie",   adBlockStateManage.dynBlockSite.some((item) => item.url == userUrlToBlock))
       if (
@@ -154,8 +155,6 @@ function getSetLocalStorage(currentUrl) {
         setValueToStorage(adBlockStateManage);
       }
     }
-    txtToBlock.value = "";
-    btnDynamicUserInput.disabled = true;
   });
 
   // Sitesblocked
@@ -220,13 +219,18 @@ function blockAllowHandler(getHandler, currentUrl) {
   setValueToStorage(adBlockStateManage);
 }
 
-function updateDynamicRules(deleteItems, formRules) {
+function updateDynamicRules(deleteItems, formRules, cbPageReload) {
   console.log("deleteItems - ", deleteItems);
   console.log("formRules - ", formRules);
   chrome.declarativeNetRequest.updateDynamicRules({
     removeRuleIds: deleteItems,
     addRules: formRules,
   });
+  cbPageReload();
+}
+
+function pageReload() {
+  // chrome.tabs.reload((a) => console.log("Tab reloaded - ", a));
 }
 
 function dynamicRulesHandler(getItm) {
@@ -258,7 +262,7 @@ function dynamicRulesHandler(getItm) {
       ];
     });
 
-    updateDynamicRules(deleteItems, formRules);
+    updateDynamicRules(deleteItems, formRules, pageReload);
     // chrome.declarativeNetRequest.getDynamicRules((a) =>console.log(a));
   } else {
     getItm.map((itm) => {
@@ -278,7 +282,7 @@ function dynamicRulesHandler(getItm) {
       ];
     });
 
-    updateDynamicRules(deleteItems, formRules);
+    updateDynamicRules(deleteItems, formRules, pageReload);
   }
 }
 
@@ -435,7 +439,6 @@ function tableAdAllowedSites(blockedSites) {
 
     adBlockStateManage.allowAdonSites =
       adBlockStateManage.allowAdonSites.filter((item) => item != url);
-
     setValueToStorage(adBlockStateManage);
     // console.log("final", adBlockStateManage);
   }
