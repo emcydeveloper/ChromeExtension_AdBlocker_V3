@@ -4,6 +4,8 @@ ul {
 	list-style: none;
 }
 
+
+
 .guage-holder {
   width: 220px;
   margin: 50px auto 0;
@@ -104,3 +106,9 @@ ul {
   height: 0;
 }
 
+
+#btn-allow,#btn-block{
+  background-color: transparent;
+  border: none;
+  /* cursor: false; */
+}
