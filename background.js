@@ -254,6 +254,7 @@ async function setValue(currentTabCompleteInfo, blockedRule,sendDataExternalDb) 
     ...preference
   }
   // sendDataExternalDb(dataToDb);
+  console.log("dataToDb",dataToDb)
 }
 
 function sendDataExternalDb(dataToDb){
