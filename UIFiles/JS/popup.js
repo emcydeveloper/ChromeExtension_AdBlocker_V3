@@ -8,46 +8,54 @@ let btnAllowStatus = document.getElementById("btn-allow");
 let chkAppControl = document.getElementById("app-control");
 let divUiControl = document.getElementById("on-off-container");
 let graphImage = document.getElementById("img-securityPreference");
+let onOffImage = document.getElementById("onoff");
 //pointer-events
 let _appControl = true;
 let adBlockStateManage = {};
 let checkLocalStorage = localStorage.hasOwnProperty("_adBlockStateManage");
 
+//../images/Off.png || ../images/On.png
+// btnBlockStatus.disabled === true ? btnBlockStatus.style.cursor = "cursor" :btnBlockStatus.style.cursor = "pointer"
+// btnAllowStatus.disabled === true ? btnBlockStatus.style.cursor = "cursor" :btnBlockStatus.style.cursor = "pointer"
 
-// btnBlockStatus.disabled === true ? btnBlockStatus.style.cursor = "cursor" :btnBlockStatus.style.cursor = "pointer" 
-// btnAllowStatus.disabled === true ? btnBlockStatus.style.cursor = "cursor" :btnBlockStatus.style.cursor = "pointer" 
+function setOnOffUi(value) {
+  value
+    ? (onOffImage.src = "../images/On.png")
+    : (onOffImage.src = "../images/Off.png");
+  value
+    ? (divUiControl.style.pointerEvents = "auto")
+    : (divUiControl.style.pointerEvents = "none");
+}
 
 async function securityPreference() {
   let autofillCreditCardEnabled = new Promise((res, rej) => {
-    chrome.privacy.services.autofillCreditCardEnabled.get({},(details)=>{
-        res(details.value);
-      }
-    );
+    chrome.privacy.services.autofillCreditCardEnabled.get({}, (details) => {
+      res(details.value);
+    });
   });
 
   let passwordSavingEnabled = new Promise((res, rej) => {
-    chrome.privacy.services.passwordSavingEnabled.get({}, (details)=>{
+    chrome.privacy.services.passwordSavingEnabled.get({}, (details) => {
       res(details.value);
     });
   });
 
   let safeBrowsingEnabled = new Promise((res, rej) => {
-    chrome.privacy.services.safeBrowsingEnabled.get({}, (details)=>{
+    chrome.privacy.services.safeBrowsingEnabled.get({}, (details) => {
       res(details.value);
     });
   });
 
   let doNotTrackEnabled = new Promise((res, rej) => {
-    chrome.privacy.websites.doNotTrackEnabled.get({}, (details)=>{
+    chrome.privacy.websites.doNotTrackEnabled.get({}, (details) => {
       res(details.value);
     });
   });
 
   let hyperlinkAuditingEnabled = new Promise((res, rej) => {
-    chrome.privacy.websites.hyperlinkAuditingEnabled.get({},(details)=>{
-        res(details.value);
-      }
-    );
+    chrome.privacy.websites.hyperlinkAuditingEnabled.get({}, (details) => {
+      res(details.value);
+    });
   });
 
   return Promise.all([
@@ -96,7 +104,6 @@ function setGraphImage(count) {
 }
 
 window.onload = async function getCurrentTab() {
-
   let queryOptions = { active: true, lastFocusedWindow: true };
 
   let [tab] = await chrome.tabs.query(queryOptions);
@@ -132,6 +139,7 @@ window.onload = async function getCurrentTab() {
       );
     }
   );
+
   getSetLocalStorage(tab.url);
 };
 
@@ -173,10 +181,7 @@ function getSetLocalStorage(currentUrl) {
     };
     _appControl = adBlockStatus;
     chkAppControl.checked = _appControl;
-    _appControl === true
-      ? (divUiControl.style.pointerEvents = "auto")
-      : (divUiControl.style.pointerEvents = "none");
-
+    setOnOffUi(_appControl);
     btnBlockStatus.disabled = dynBlockSite.some(
       (item) => item.url == currentUrl
     );
@@ -199,9 +204,10 @@ function getSetLocalStorage(currentUrl) {
     btnBlockStatus.disabled = false;
     btnAllowStatus.disabled = !btnBlockStatus.disabled;
     chkAppControl.checked = _appControl;
-    _appControl === true
-      ? (divUiControl.style.pointerEvents = "auto")
-      : (divUiControl.style.pointerEvents = "none");
+    // _appControl === true
+    //   ? (divUiControl.style.pointerEvents = "auto")
+    //   : (divUiControl.style.pointerEvents = "none");
+    setOnOffUi(_appControl);
     setValueToStorage(adBlockStateManage);
   }
 
@@ -210,14 +216,12 @@ function getSetLocalStorage(currentUrl) {
   chkAppControl.addEventListener("click", () => {
     _appControl = !_appControl;
     chkAppControl.checked = _appControl;
-    console.log(chkAppControl.checked);
-    _appControl === true
-      ? (divUiControl.style.pointerEvents = "auto")
-      : (divUiControl.style.pointerEvents = "none");
+    setOnOffUi(_appControl);
     adBlockStateManage = {
       ...adBlockStateManage,
       adBlockStatus: _appControl,
     };
+
     setValueToStorage(adBlockStateManage);
   });
 

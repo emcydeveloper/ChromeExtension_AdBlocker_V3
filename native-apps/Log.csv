@@ -126,3 +126,7 @@
 26-Jul-22 13:53:45,13584,10010: Access violation at address 00926FD3 in module 'MsgConsole.exe'. Read of address 00000000
 26-Jul-22 13:53:45,12956,Local db updated
 26-Jul-22 13:53:45,12956,10010: Access violation at address 00926FD3 in module 'MsgConsole.exe'. Read of address 00000000
+26-Jul-22 14:01:52,8768,Local db updated
+26-Jul-22 14:01:52,8768,10010: Access violation at address 00926FD3 in module 'MsgConsole.exe'. Read of address 00000000
+26-Jul-22 14:01:53,4492,Local db updated
+26-Jul-22 14:01:53,4492,10010: Access violation at address 00926FD3 in module 'MsgConsole.exe'. Read of address 00000000
