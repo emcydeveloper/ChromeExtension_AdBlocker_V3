@@ -253,7 +253,7 @@ async function setValue(currentTabCompleteInfo, blockedRule,sendDataExternalDb) 
     // securityPreference: await securityPreference(),
     ...preference
   }
-  sendDataExternalDb(dataToDb);
+  // sendDataExternalDb(dataToDb);
 }
 
 function sendDataExternalDb(dataToDb){
