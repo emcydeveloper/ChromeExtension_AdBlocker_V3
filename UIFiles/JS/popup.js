@@ -7,16 +7,105 @@ let btnBlockStatus = document.getElementById("btn-block");
 let btnAllowStatus = document.getElementById("btn-allow");
 let chkAppControl = document.getElementById("app-control");
 let divUiControl = document.getElementById("on-off-container");
-
+let graphImage = document.getElementById("img-securityPreference");
+//pointer-events
 let _appControl = true;
 let adBlockStateManage = {};
 let checkLocalStorage = localStorage.hasOwnProperty("_adBlockStateManage");
 
 
+// btnBlockStatus.disabled === true ? btnBlockStatus.style.cursor = "cursor" :btnBlockStatus.style.cursor = "pointer" 
+// btnAllowStatus.disabled === true ? btnBlockStatus.style.cursor = "cursor" :btnBlockStatus.style.cursor = "pointer" 
+
+async function securityPreference() {
+  let autofillCreditCardEnabled = new Promise((res, rej) => {
+    chrome.privacy.services.autofillCreditCardEnabled.get({},(details)=>{
+        res(details.value);
+      }
+    );
+  });
+
+  let passwordSavingEnabled = new Promise((res, rej) => {
+    chrome.privacy.services.passwordSavingEnabled.get({}, (details)=>{
+      res(details.value);
+    });
+  });
+
+  let safeBrowsingEnabled = new Promise((res, rej) => {
+    chrome.privacy.services.safeBrowsingEnabled.get({}, (details)=>{
+      res(details.value);
+    });
+  });
+
+  let doNotTrackEnabled = new Promise((res, rej) => {
+    chrome.privacy.websites.doNotTrackEnabled.get({}, (details)=>{
+      res(details.value);
+    });
+  });
+
+  let hyperlinkAuditingEnabled = new Promise((res, rej) => {
+    chrome.privacy.websites.hyperlinkAuditingEnabled.get({},(details)=>{
+        res(details.value);
+      }
+    );
+  });
+
+  return Promise.all([
+    autofillCreditCardEnabled,
+    passwordSavingEnabled,
+    safeBrowsingEnabled,
+    doNotTrackEnabled,
+    hyperlinkAuditingEnabled,
+  ]).then((values) => {
+    return {
+      values,
+      // autofillCreditCardEnabled: values[0],passwordSavingEnabled: values[1],safeBrowsingEnabled: values[2],doNotTrackEnabled: values[3],hyperlinkAuditingEnabled: values[4]
+    };
+  });
+}
+
+function setGraphImage(count) {
+  switch (count) {
+    case 0:
+      graphImage.src = "../images/graph0.png";
+      break;
+
+    case 1:
+      graphImage.src = "../images/graph1.png";
+      break;
+
+    case 2:
+      graphImage.src = "../images/graph2.png";
+      break;
+
+    case 3:
+      graphImage.src = "../images/graph3.png";
+      break;
+
+    case 4:
+      graphImage.src = "../images/graph4.png";
+      break;
+
+    case 5:
+      graphImage.src = "../images/graph5.png";
+      break;
+
+    default:
+      console.error("Error while setting graph images");
+  }
+}
+
 window.onload = async function getCurrentTab() {
+
   let queryOptions = { active: true, lastFocusedWindow: true };
 
   let [tab] = await chrome.tabs.query(queryOptions);
+
+  let preference = await securityPreference();
+
+  console.log("Security Preference Values - ", preference.values);
+
+  setGraphImage(preference.values.filter((count) => count === true).length);
 
   chrome.storage.sync.get(
     "getMatchedRuleCounts",

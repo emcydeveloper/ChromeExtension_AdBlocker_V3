@@ -22,6 +22,8 @@ btnDynamicUserInput.value = "Sitesblocked";
 btnDynamicUserInput.innerText = "Block";
 // btnUserInputBlock.disabled = true;
 btnDynamicUserInput.disabled = true;
+btnDynamicUserInput.style.cursor = "cursor";
+btnDynamicUserInput.style.color = "";
 
 let _appControl = true;
 let adBlockStateManage = {};
@@ -108,6 +110,8 @@ function getSetLocalStorage(currentUrl) {
     if (getEvent.target.value.length > 3) {
       // btnUserInputBlock.disabled = false;
       btnDynamicUserInput.disabled = false;
+      btnDynamicUserInput.style.cursor = "pointer";
+      btnDynamicUserInput.style.color = "#6ab6f7";
       let results = adBlockStateManage.dynBlockSite.filter((getItem) =>
         getText(getItem.url, getEvent.target.value)
       );
@@ -117,6 +121,8 @@ function getSetLocalStorage(currentUrl) {
     } else {
       // btnUserInputBlock.disabled = true;
       btnDynamicUserInput.disabled = true;
+      btnDynamicUserInput.style.cursor = "cursor";
+      btnDynamicUserInput.style.color = "";
       tableDisplayBlockedSites(adBlockStateManage.dynBlockSite);
     }
   });
@@ -125,6 +131,8 @@ function getSetLocalStorage(currentUrl) {
     userUrlToBlock = txtToBlock.value;
     txtToBlock.value = "";
     btnDynamicUserInput.disabled = true;
+    btnDynamicUserInput.style.cursor = "cursor";
+    btnDynamicUserInput.style.color = "";
     if (btnDynamicUserInput.value == "Sitesblocked") {
       // console.log("Block Webstie",   adBlockStateManage.dynBlockSite.some((item) => item.url == userUrlToBlock))
       if (
@@ -132,8 +140,6 @@ function getSetLocalStorage(currentUrl) {
           (item) => item.url == userUrlToBlock
         )
       ) {
-        txtToBlock.value = "";
-        alert("Alerady Blcoked");
         tableDisplayBlockedSites(adBlockStateManage.dynBlockSite);
       } else {
         blockAllowHandler("block", userUrlToBlock);
@@ -143,13 +149,11 @@ function getSetLocalStorage(currentUrl) {
       if (
         adBlockStateManage.allowAdonSites.some((item) => item == userUrlToBlock)
       ) {
-        txtToBlock.value = "";
-        alert("Alerady Blcoked");
         tableAdAllowedSites(adBlockStateManage.allowAdonSites);
       } else {
         adBlockStateManage.allowAdonSites = [
           ...adBlockStateManage.allowAdonSites,
-          txtToBlock.value,
+          userUrlToBlock,
         ];
         tableAdAllowedSites(adBlockStateManage.allowAdonSites);
         setValueToStorage(adBlockStateManage);
@@ -162,6 +166,8 @@ function getSetLocalStorage(currentUrl) {
   radioContainer.onchange = function (e) {
     txtToBlock.value = "";
     btnDynamicUserInput.disabled = true;
+    btnDynamicUserInput.style.cursor = "cursor";
+    btnDynamicUserInput.style.color = "";
     switch (e.target.value) {
       case "Sitesblocked":
         document.getElementById("blocksite-table").style.display = "block";

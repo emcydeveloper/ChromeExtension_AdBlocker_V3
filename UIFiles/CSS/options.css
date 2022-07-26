@@ -16,16 +16,15 @@ table {
 
 
 td {
-    /* padding: 15px; */
     border-bottom: 1px solid #ddd;
   }
 
-  tr:hover {background-color: lightblue;}
+  /* tr:hover {background-color: lightblue;} */
   
   td {
     text-align: left;
     font-size:15px !important;
-  }
+  } 
 
 .btn-delete-site,.delete-site{
     border: none;
@@ -42,6 +41,11 @@ td {
 
 #dynamic-block-allow{
     padding: 0px;
+    background-color: transparent;
+    border: none;
+    /* color: #6ab6f7; */
+    /* cursor: none; */
+    /* style="color: #6ab6f7; cursor: pointer; padding: 5px" */
 }
 
 #blocksite-table,#allow-ad-site-table{
@@ -141,3 +145,7 @@ td {
     text-align:left !important;
 
 }
+
+/* #txt-site-to-block{
+     border: 5px solid red; 
+} */

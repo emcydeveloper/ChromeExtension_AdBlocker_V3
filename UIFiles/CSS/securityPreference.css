@@ -31,7 +31,9 @@ height: 10%;
 
 #brief-items{
   padding-top: 30px;
-  font-size: small;
+  font-size: large;
+  color: grey;
+  margin: 10px;
 }
 
 .box_border {
@@ -128,12 +130,15 @@ input:checked + .slider:before {
 }
 
 table{
-  width: 85%;
+  width: 100%;
   margin: 10px;
 }
 table>caption{
   text-align: left;
-  margin: 10px;;
+  margin-top: 15px;
+  font-weight: bolder;
+  font-size: large;
+  color: #206cbf;
 }
 
 td {
